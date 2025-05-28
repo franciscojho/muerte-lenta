@@ -9,11 +9,16 @@ namespace pe.com.muertelenta.dal
 {
     public class ConnectionDAL
     {
-        private string dbSettings = "Data Source=DESKTOP-RFDMQII\\SQLEXPRESS;Initial Catalog=bdmuertelenta2025;Integrated Security=SSPI;TrustServerCertificate=true;";
         private SqlConnection sqlConnection;
 
         public SqlConnection? connect()
         {
+            string dbSettings = 
+                "Data Source=FRANCISCOJHO\\SQLEXPRESS;" +
+                "Initial Catalog=bdmuertelenta2025;" +
+                "Integrated Security=SSPI;" +
+                "TrustServerCertificate=true;";
+
             try
             {
                 sqlConnection = new SqlConnection(dbSettings);
