@@ -22,9 +22,9 @@ namespace pe.com.muertelenta.bal
             return tipoDocumentoDAL.ShowAllTipoDocumento();
         }
 
-        public bool addTipoDocumento(TipoDocumentoBO tipoDocumentoBO)
+        public bool AddTipoDocumento(TipoDocumentoBO tipoDocumentoBO)
         {
-            return tipoDocumentoDAL.addTipoDocumento(tipoDocumentoBO);
+            return tipoDocumentoDAL.AddTipoDocumento(tipoDocumentoBO);
         }
     }
 }

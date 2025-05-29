@@ -36,5 +36,11 @@ namespace pe.com.muertelenta.ui
             frmTipoPlato form = new frmTipoPlato();
             form.ShowDialog();
         }
+
+        private void tsmTipoDeDocumento_Click(object sender, EventArgs e)
+        {
+            frmTipoDocumento form = new frmTipoDocumento();
+            form.ShowDialog();
+        }
     }
 }
