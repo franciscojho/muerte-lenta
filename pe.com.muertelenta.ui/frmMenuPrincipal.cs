@@ -54,5 +54,11 @@ namespace pe.com.muertelenta.ui
             frmSexo form = new frmSexo();
             form.ShowDialog();
         }
+
+        private void tsmRol_Click(object sender, EventArgs e)
+        {
+            frmRol form = new frmRol();
+            form.ShowDialog();
+        }
     }
 }

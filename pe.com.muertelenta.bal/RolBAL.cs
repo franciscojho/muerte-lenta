@@ -21,9 +21,9 @@ namespace pe.com.muertelenta.bal
         {
             return rolDAL.ShowAllRol();
         }
-        public bool addRol(RolBO rolBO)
+        public bool AddRol(RolBO rolBO)
         {
-            return rolDAL.addRol(rolBO);
+            return rolDAL.AddRol(rolBO);
         }
     }
 }
