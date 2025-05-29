@@ -22,9 +22,9 @@ namespace pe.com.muertelenta.bal
             return distritoDAL.ShowAllDistrito();
         }
 
-        public bool addDistrito(DistritoBO distritoBO)
+        public bool AddDistrito(DistritoBO distritoBO)
         {
-            return distritoDAL.addDistrito(distritoBO);
+            return distritoDAL.AddDistrito(distritoBO);
         }
     }
 }

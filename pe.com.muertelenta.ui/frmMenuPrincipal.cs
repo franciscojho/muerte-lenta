@@ -37,6 +37,12 @@ namespace pe.com.muertelenta.ui
             form.ShowDialog();
         }
 
+        private void tsmDistrito_Click(object sender, EventArgs e)
+        {
+            frmDistrito form = new frmDistrito();
+            form.ShowDialog();
+        }
+
         private void tsmTipoDeDocumento_Click(object sender, EventArgs e)
         {
             frmTipoDocumento form = new frmTipoDocumento();
