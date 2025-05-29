@@ -77,7 +77,7 @@ namespace pe.com.muertelenta.dal
             }
         }
 
-        public bool addRol(RolBO rol)
+        public bool AddRol(RolBO rol)
         {
             int responseCode = 0;
             try
