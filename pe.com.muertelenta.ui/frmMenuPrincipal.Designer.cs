@@ -106,6 +106,7 @@
             tsmSexo.Name = "tsmSexo";
             tsmSexo.Size = new Size(273, 34);
             tsmSexo.Text = "Sexo";
+            tsmSexo.Click += tsmSexo_Click;
             // 
             // tsmTipoDeDocumento
             // 

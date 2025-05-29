@@ -48,5 +48,11 @@ namespace pe.com.muertelenta.ui
             frmTipoDocumento form = new frmTipoDocumento();
             form.ShowDialog();
         }
+
+        private void tsmSexo_Click(object sender, EventArgs e)
+        {
+            frmSexo form = new frmSexo();
+            form.ShowDialog();
+        }
     }
 }
