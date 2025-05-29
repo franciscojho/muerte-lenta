@@ -78,7 +78,7 @@ namespace pe.com.muertelenta.dal
             }
         }
 
-        public bool addDistrito(DistritoBO distrito)
+        public bool AddDistrito(DistritoBO distrito)
         {
             int responseCode = 0;
             try

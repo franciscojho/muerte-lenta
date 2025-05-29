@@ -99,6 +99,7 @@
             tsmDistrito.Name = "tsmDistrito";
             tsmDistrito.Size = new Size(273, 34);
             tsmDistrito.Text = "Distrito";
+            tsmDistrito.Click += tsmDistrito_Click;
             // 
             // tsmSexo
             // 
