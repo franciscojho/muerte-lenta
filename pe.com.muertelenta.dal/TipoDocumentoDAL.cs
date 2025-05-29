@@ -77,7 +77,7 @@ namespace pe.com.muertelenta.dal
             }
         }
 
-        public bool addTipoDocumento(TipoDocumentoBO tipoDocumentoBO)
+        public bool AddTipoDocumento(TipoDocumentoBO tipoDocumentoBO)
         {
             int responseCode = 0;
             try
