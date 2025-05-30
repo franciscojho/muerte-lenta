@@ -438,3 +438,341 @@ END
 GO
 
 -- END STORE PROCEDURES FOR TIPODOCUMENTO TABLE
+
+-- BEGIN STORE PROCEDURES FOR CLIENTE TABLE
+
+-- SP_MostrarCliente
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_MostrarCliente') 
+	DROP PROCEDURE SP_MostrarCliente
+GO
+CREATE PROC	SP_MostrarCliente
+AS
+BEGIN
+	SELECT * FROM cliente WHERE estcli = 1
+END
+GO
+	EXEC SP_MostrarCliente
+GO
+
+-- SP_MostrarTodoCliente
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_MostrarTodoCliente') 
+	DROP PROCEDURE SP_MostrarTodoCliente
+GO
+CREATE PROC	SP_MostrarTodoCliente
+AS
+BEGIN
+	SELECT * FROM cliente
+END
+GO
+	EXEC SP_MostrarTodoCliente
+GO
+
+-- SP_RegistrarCliente
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_RegistrarCliente') 
+	DROP PROCEDURE SP_RegistrarCliente  
+GO
+CREATE PROC	SP_RegistrarCliente
+	@nombre varchar(40),
+	@apellidoparterno varchar(30),
+	@apellidomaterno varchar(30),
+	@dni varchar(8),
+	@fecha date,
+	@direccion varchar(50),
+	@telefono varchar(7),
+	@celular varchar(9),
+	@correo varchar(40),
+	@sexo varchar(9),
+	@estado bit,
+	@codigodistrito int,
+	@codigosexo int,
+	@codigotipodocumento int
+AS
+BEGIN
+	BEGIN TRAN SP_RegistrarCliente
+	BEGIN TRY
+		INSERT INTO cliente values(
+			@nombre,
+			@apellidoparterno,
+			@apellidomaterno,
+			@dni,
+			@fecha,
+			@direccion,
+			@telefono,
+			@celular,
+			@correo,
+			@sexo,
+			@estado,
+			@codigodistrito,
+			@codigosexo,
+			@codigotipodocumento
+		)
+		COMMIT TRAN SP_RegistrarCliente
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN SP_RegistrarCliente
+	END CATCH
+END
+GO
+
+-- SP_ActualizarCliente
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_ActualizarCliente') 
+	DROP PROCEDURE SP_ActualizarCliente  
+GO
+CREATE PROC	SP_ActualizarCliente
+	@codigo int,
+	@nombre varchar(40),
+	@apellidoparterno varchar(30),
+	@apellidomaterno varchar(30),
+	@dni varchar(8),
+	@fecha date,
+	@direccion varchar(50),
+	@telefono varchar(7),
+	@celular varchar(9),
+	@correo varchar(40),
+	@sexo varchar(9),
+	@estado bit,
+	@codigodistrito int,
+	@codigosexo int,
+	@codigotipodocumento int
+AS
+BEGIN
+	BEGIN TRAN SP_ActualizarCliente
+	BEGIN TRY
+		UPDATE cliente SET 
+			nomcli=@nombre,
+			apepcli=@apellidoparterno,
+			apemcli=@apellidomaterno,
+			dnicli=@dni,
+			feccli=@fecha,
+			dircli=@direccion,
+			telcli=@telefono,
+			celcli=@celular,
+			corcli=@correo,
+			sexcli=@sexo,
+			estcli=@estado,
+			coddis=@codigodistrito,
+			codsex=@codigosexo,
+			codtipd=@codigotipodocumento
+		WHERE codcli=@codigo
+		COMMIT TRAN SP_ActualizarCliente
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN SP_ActualizarCliente
+	END CATCH
+END
+GO
+
+-- SP_EliminarCliente
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_EliminarCliente') 
+	DROP PROCEDURE SP_EliminarCliente  
+GO
+CREATE PROC	SP_EliminarCliente
+@codigo int
+AS
+BEGIN
+	BEGIN TRAN SP_EliminarCliente
+	BEGIN TRY
+		UPDATE cliente SET estcli=0 where codcli=@codigo
+		COMMIT TRAN SP_EliminarCliente
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN SP_EliminarCliente
+	END CATCH
+END
+GO
+
+-- SP_HabilitarCliente
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_HabilitarCliente') 
+	DROP PROCEDURE SP_HabilitarCliente  
+GO
+CREATE PROC	SP_HabilitarCliente
+@codigo int
+AS
+BEGIN
+	BEGIN TRAN SP_HabilitarCliente
+	BEGIN TRY
+		UPDATE cliente SET estcli=1 where codcli=@codigo
+		COMMIT TRAN SP_HabilitarCliente
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN SP_HabilitarCliente
+	END CATCH
+END
+GO
+
+-- END STORE PROCEDURES FOR CLIENTE TABLE
+
+-- BEGIN STORE PROCEDURES FOR EMPLEADO TABLE
+
+-- SP_MostrarEmpleado
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_MostrarEmpleado') 
+	DROP PROCEDURE SP_MostrarEmpleado
+GO
+CREATE PROC	SP_MostrarEmpleado
+AS
+BEGIN
+	SELECT * FROM empleado WHERE estemp = 1
+END
+GO
+	EXEC SP_MostrarEmpleado
+GO
+
+-- SP_MostrarTodoCliente
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_MostrarTodoCliente') 
+	DROP PROCEDURE SP_MostrarTodoCliente
+GO
+CREATE PROC	SP_MostrarTodoCliente
+AS
+BEGIN
+	SELECT * FROM empleado
+END
+GO
+	EXEC SP_MostrarTodoCliente
+GO
+
+-- SP_RegistrarEmpleado
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_RegistrarEmpleado') 
+	DROP PROCEDURE SP_RegistrarEmpleado  
+GO
+CREATE PROC	SP_RegistrarEmpleado
+	@nombre varchar(40),
+	@apellidoparterno varchar(30),
+	@apellidomaterno varchar(30),
+	@dni varchar(8),
+	@fecha date,
+	@direccion varchar(50),
+	@telefono varchar(7),
+	@celular varchar(9),
+	@correo varchar(40),
+	@sexo varchar(9),
+	@usuario varchar(40),
+	@clave varchar(40),
+	@estado bit,
+	@codigodistrito int,
+	@codigorol int,
+	@codigosexo int,
+	@codigotipodocumento int
+AS
+BEGIN
+	BEGIN TRAN SP_RegistrarEmpleado
+	BEGIN TRY
+		INSERT INTO empleado values(
+			@nombre,
+			@apellidoparterno,
+			@apellidomaterno,
+			@dni,
+			@fecha,
+			@direccion,
+			@telefono,
+			@celular,
+			@correo,
+			@sexo,
+			@usuario,
+			@clave,
+			@estado,
+			@codigodistrito,
+			@codigorol,
+			@codigosexo,
+			@codigotipodocumento
+		)
+		COMMIT TRAN SP_RegistrarEmpleado
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN SP_RegistrarEmpleado
+	END CATCH
+END
+GO
+
+-- SP_ActualizarEmpleado
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_ActualizarEmpleado') 
+	DROP PROCEDURE SP_ActualizarEmpleado  
+GO
+CREATE PROC	SP_ActualizarEmpleado
+	@codigo int,
+	@nombre varchar(40),
+	@apellidoparterno varchar(30),
+	@apellidomaterno varchar(30),
+	@dni varchar(8),
+	@fecha date,
+	@direccion varchar(50),
+	@telefono varchar(7),
+	@celular varchar(9),
+	@correo varchar(40),
+	@sexo varchar(9),
+	@usuario varchar(40),
+	@clave varchar(40),
+	@estado bit,
+	@codigodistrito int,
+	@codigorol int,
+	@codigosexo int,
+	@codigotipodocumento int
+AS
+BEGIN
+	BEGIN TRAN SP_ActualizarEmpleado
+	BEGIN TRY
+		UPDATE empleado SET 
+			nomemp=@nombre,
+			apepemp=@apellidoparterno,
+			apememp=@apellidomaterno,
+			dniemp=@dni,
+			fecemp=@fecha,
+			diremp=@direccion,
+			telemp=@telefono,
+			celemp=@celular,
+			coremp=@correo,
+			sexemp=@sexo,
+			usuemp=@usuario,
+			claemp=@clave,
+			estemp=@estado,
+			coddis=@codigodistrito,
+			codrol=@codigorol,
+			codsex=@codigosexo,
+			codtipd=@codigotipodocumento
+		WHERE codemp=@codigo
+		COMMIT TRAN SP_ActualizarEmpleado
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN SP_ActualizarEmpleado
+	END CATCH
+END
+GO
+
+-- SP_EliminarEmpleado
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_EliminarEmpleado') 
+	DROP PROCEDURE SP_EliminarEmpleado  
+GO
+CREATE PROC	SP_EliminarEmpleado
+@codigo int
+AS
+BEGIN
+	BEGIN TRAN SP_EliminarEmpleado
+	BEGIN TRY
+		UPDATE empleado SET estemp=0 where codemp=@codigo
+		COMMIT TRAN SP_EliminarEmpleado
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN SP_EliminarEmpleado
+	END CATCH
+END
+GO
+
+-- SP_HabilitarEmpleado
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_HabilitarEmpleado') 
+	DROP PROCEDURE SP_HabilitarEmpleado  
+GO
+CREATE PROC	SP_HabilitarEmpleado
+@codigo int
+AS
+BEGIN
+	BEGIN TRAN SP_HabilitarEmpleado
+	BEGIN TRY
+		UPDATE empleado SET estemp=1 where codemp=@codigo
+		COMMIT TRAN SP_HabilitarEmpleado
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRAN SP_HabilitarEmpleado
+	END CATCH
+END
+GO
+
+-- END STORE PROCEDURES FOR EMPLEADO TABLE
