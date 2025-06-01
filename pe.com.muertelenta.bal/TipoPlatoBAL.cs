@@ -21,9 +21,25 @@ namespace pe.com.muertelenta.bal
         {
             return tipoPlatoDal.ShowAllTipoPlato();
         }
-        public bool addTipoPlato(TipoPlatoBO tipoPlatoBO)
+
+        public bool AddTipoPlato(TipoPlatoBO tipoPlatoBO)
         {
             return tipoPlatoDal.addTipoPlato(tipoPlatoBO);
+        }
+
+        public bool UpdateTipoPlato(TipoPlatoBO tipoPlatoBO)
+        {
+            return tipoPlatoDal.updateTipoPlato(tipoPlatoBO);
+        }
+
+        public bool DeleteTipoPlato(TipoPlatoBO tipoPlatoBO)
+        {
+            return tipoPlatoDal.deleteTipoPlato(tipoPlatoBO);
+        }
+
+        public bool EnableTipoPlato(TipoPlatoBO tipoPlatoBO)
+        {
+            return tipoPlatoDal.enableTipoPlato(tipoPlatoBO);
         }
     }
 }
