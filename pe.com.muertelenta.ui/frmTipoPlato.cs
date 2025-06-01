@@ -69,7 +69,7 @@ namespace pe.com.muertelenta.ui
             dgvTipoPlato.Columns.Add(stateColumn);
             dgvTipoPlato.CellFormatting += (s, e) =>
             {
-                if (dgvTipoPlato.Columns[e.ColumnIndex].Name == "state" && e.Value != null )
+                if (dgvTipoPlato.Columns[e.ColumnIndex].Name == "state" && e.Value != null)
                 {
                     e.Value = (bool)e.Value ? "Habilitado" : "Deshabilitado";
                     e.FormattingApplied = true;
@@ -84,7 +84,7 @@ namespace pe.com.muertelenta.ui
 
         private void loadTipoPlato()
         {
-            List<TipoPlatoBO> tipoPlatos = tipoPlatoBAL.ShowAllTipoPlato();
+            List<TipoPlatoBO> tipoPlatos = tipoPlatoBAL.ShowTipoPlato();
             dgvTipoPlato.DataSource = tipoPlatos;
         }
 
@@ -100,7 +100,7 @@ namespace pe.com.muertelenta.ui
             TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
             bool response = false;
 
-            if(txtName.Text == "")
+            if (txtName.Text == "")
             {
                 MessageBox.Show("Ingresa el nombre");
                 txtName.Focus();
@@ -109,7 +109,7 @@ namespace pe.com.muertelenta.ui
             {
                 tipoPlatoBO.name = txtName.Text;
                 tipoPlatoBO.state = cbState.Checked;
-                response = tipoPlatoBAL.addTipoPlato(tipoPlatoBO);
+                response = tipoPlatoBAL.AddTipoPlato(tipoPlatoBO);
                 if (response == true)
                 {
                     MessageBox.Show("Se registró el tipo de plato");
@@ -118,22 +118,90 @@ namespace pe.com.muertelenta.ui
                     enableFieldsAndButtons(false);
                     btnNew.Enabled = true;
                 }
+                else
+                {
+                    MessageBox.Show("No se resgistró el tipo de plato");
+                }
             }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+            bool response = false;
 
+            tipoPlatoBO.code = Convert.ToInt32(txtCode.Text);
+            tipoPlatoBO.name = txtName.Text;
+            tipoPlatoBO.state = cbState.Checked;
+            response = tipoPlatoBAL.UpdateTipoPlato(tipoPlatoBO);
+            if (response == true)
+            {
+                MessageBox.Show("Se actualizó el tipo de plato");
+                loadTipoPlato();
+                clearFields();
+                enableFieldsAndButtons(false);
+                btnNew.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("No se actualizó el tipo de plato");
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+            bool response = false;
 
+            tipoPlatoBO.code = Convert.ToInt32(txtCode.Text);
+
+            DialogResult dialogResult = MessageBox.Show(
+                "¿Seguro que quieres eliminar el tipo de plato?",
+                "Eliminando tipo de plato",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Error
+             );
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                response = tipoPlatoBAL.DeleteTipoPlato(tipoPlatoBO);
+                if (response == true)
+                {
+                    MessageBox.Show("Se eliminó el tipo de plato");
+                    loadTipoPlato();
+                    clearFields();
+                    enableFieldsAndButtons(false);
+                    btnNew.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("No se eliminó el tipo de plato");
+                }
+            }
         }
 
         private void btnEnable_Click(object sender, EventArgs e)
         {
+            frmHabilitarTipoPlato form = new frmHabilitarTipoPlato();
+            form.ShowDialog();
+        }
 
+        private void dgvTipoPlato_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+            enableFieldsAndButtons(true);
+            btnAdd.Enabled = true;
+            DataGridViewRow selectedRow = dgvTipoPlato.Rows[index];
+            txtCode.Text = selectedRow.Cells["code"].Value.ToString();
+            txtName.Text = selectedRow.Cells["name"].Value.ToString();
+            if (Convert.ToBoolean(selectedRow.Cells["state"].Value))
+            {
+                cbState.Checked = true;
+            }
+            else
+            {
+                cbState.Checked = true;
+            }
         }
     }
 }

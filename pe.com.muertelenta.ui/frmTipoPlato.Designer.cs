@@ -48,68 +48,76 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(236, 22);
+            label1.Location = new Point(337, 37);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(319, 30);
+            label1.Size = new Size(486, 45);
             label1.TabIndex = 0;
             label1.Text = "MANTENIMIENTO TIPO PLATO";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(27, 92);
+            label2.Location = new Point(39, 153);
+            label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new Size(49, 15);
+            label2.Size = new Size(75, 25);
             label2.TabIndex = 1;
             label2.Text = "Codigo:";
             // 
             // txtCode
             // 
-            txtCode.Location = new Point(122, 89);
+            txtCode.Location = new Point(174, 148);
+            txtCode.Margin = new Padding(4, 5, 4, 5);
             txtCode.Name = "txtCode";
-            txtCode.Size = new Size(100, 23);
+            txtCode.Size = new Size(141, 31);
             txtCode.TabIndex = 2;
             // 
             // txtName
             // 
-            txtName.Location = new Point(122, 118);
+            txtName.Location = new Point(174, 197);
+            txtName.Margin = new Padding(4, 5, 4, 5);
             txtName.Name = "txtName";
-            txtName.Size = new Size(219, 23);
+            txtName.Size = new Size(311, 31);
             txtName.TabIndex = 4;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(27, 121);
+            label3.Location = new Point(39, 202);
+            label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new Size(54, 15);
+            label3.Size = new Size(82, 25);
             label3.TabIndex = 3;
             label3.Text = "Nombre:";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(27, 150);
+            label4.Location = new Point(39, 250);
+            label4.Margin = new Padding(4, 0, 4, 0);
             label4.Name = "label4";
-            label4.Size = new Size(45, 15);
+            label4.Size = new Size(70, 25);
             label4.TabIndex = 5;
             label4.Text = "Estado:";
             // 
             // cbState
             // 
             cbState.AutoSize = true;
-            cbState.Location = new Point(122, 149);
+            cbState.Location = new Point(174, 248);
+            cbState.Margin = new Padding(4, 5, 4, 5);
             cbState.Name = "cbState";
-            cbState.Size = new Size(81, 19);
+            cbState.Size = new Size(120, 29);
             cbState.TabIndex = 6;
             cbState.Text = "Habilitado";
             cbState.UseVisualStyleBackColor = true;
             // 
             // btnNew
             // 
-            btnNew.Location = new Point(501, 88);
+            btnNew.Location = new Point(716, 147);
+            btnNew.Margin = new Padding(4, 5, 4, 5);
             btnNew.Name = "btnNew";
-            btnNew.Size = new Size(75, 23);
+            btnNew.Size = new Size(107, 38);
             btnNew.TabIndex = 7;
             btnNew.Text = "Nuevo";
             btnNew.UseVisualStyleBackColor = true;
@@ -117,9 +125,10 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(501, 122);
+            btnUpdate.Location = new Point(716, 203);
+            btnUpdate.Margin = new Padding(4, 5, 4, 5);
             btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(75, 23);
+            btnUpdate.Size = new Size(107, 38);
             btnUpdate.TabIndex = 8;
             btnUpdate.Text = "Actualizar";
             btnUpdate.UseVisualStyleBackColor = true;
@@ -127,9 +136,10 @@
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(597, 88);
+            btnAdd.Location = new Point(853, 147);
+            btnAdd.Margin = new Padding(4, 5, 4, 5);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(75, 23);
+            btnAdd.Size = new Size(107, 38);
             btnAdd.TabIndex = 9;
             btnAdd.Text = "Registrar";
             btnAdd.UseVisualStyleBackColor = true;
@@ -137,9 +147,10 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(597, 122);
+            btnDelete.Location = new Point(853, 203);
+            btnDelete.Margin = new Padding(4, 5, 4, 5);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(75, 23);
+            btnDelete.Size = new Size(107, 38);
             btnDelete.TabIndex = 10;
             btnDelete.Text = "Eliminar";
             btnDelete.UseVisualStyleBackColor = true;
@@ -147,9 +158,10 @@
             // 
             // btnEnable
             // 
-            btnEnable.Location = new Point(695, 88);
+            btnEnable.Location = new Point(993, 147);
+            btnEnable.Margin = new Padding(4, 5, 4, 5);
             btnEnable.Name = "btnEnable";
-            btnEnable.Size = new Size(75, 23);
+            btnEnable.Size = new Size(107, 38);
             btnEnable.TabIndex = 11;
             btnEnable.Text = "Habilitar";
             btnEnable.UseVisualStyleBackColor = true;
@@ -158,16 +170,19 @@
             // dgvTipoPlato
             // 
             dgvTipoPlato.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTipoPlato.Location = new Point(28, 191);
+            dgvTipoPlato.Location = new Point(40, 318);
+            dgvTipoPlato.Margin = new Padding(4, 5, 4, 5);
             dgvTipoPlato.Name = "dgvTipoPlato";
-            dgvTipoPlato.Size = new Size(742, 309);
+            dgvTipoPlato.RowHeadersWidth = 62;
+            dgvTipoPlato.Size = new Size(1060, 515);
             dgvTipoPlato.TabIndex = 12;
+            dgvTipoPlato.CellClick += dgvTipoPlato_CellClick;
             // 
             // frmTipoPlato
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 532);
+            ClientSize = new Size(1143, 887);
             Controls.Add(dgvTipoPlato);
             Controls.Add(btnEnable);
             Controls.Add(btnDelete);
@@ -181,6 +196,7 @@
             Controls.Add(txtCode);
             Controls.Add(label2);
             Controls.Add(label1);
+            Margin = new Padding(4, 5, 4, 5);
             Name = "frmTipoPlato";
             Text = "frmTipoPlato";
             ((System.ComponentModel.ISupportInitialize)dgvTipoPlato).EndInit();

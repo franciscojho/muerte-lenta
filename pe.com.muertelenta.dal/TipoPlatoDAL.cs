@@ -102,5 +102,91 @@ namespace pe.com.muertelenta.dal
                 connection.closeConnection();
             }
         }
+
+        public bool updateTipoPlato(TipoPlatoBO tipoPlato)
+        {
+            int responseCode = 0;
+            try
+            {
+                sqlCommand = new SqlCommand();
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = "SP_ActualizarTipoPlato";
+                sqlCommand.Connection = connection.connect();
+                sqlCommand.Parameters.AddWithValue("@codigo", tipoPlato.code);
+                sqlCommand.Parameters.AddWithValue("@nombre", tipoPlato.name);
+                sqlCommand.Parameters.AddWithValue("@estado", tipoPlato.state);
+                responseCode = sqlCommand.ExecuteNonQuery();
+                if (responseCode == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+            finally
+            {
+                connection.closeConnection();
+            }
+        }
+
+        public bool deleteTipoPlato(TipoPlatoBO tipoPlato)
+        {
+            int responseCode = 0;
+            try
+            {
+                sqlCommand = new SqlCommand();
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = "SP_EliminarTipoPlato";
+                sqlCommand.Connection = connection.connect();
+                sqlCommand.Parameters.AddWithValue("@codigo", tipoPlato.code);
+                responseCode = sqlCommand.ExecuteNonQuery();
+                if (responseCode == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+            finally
+            {
+                connection.closeConnection();
+            }
+        }
+
+        public bool enableTipoPlato(TipoPlatoBO tipoPlato)
+        {
+            int responseCode = 0;
+            try
+            {
+                sqlCommand = new SqlCommand();
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = "SP_HabilitarTipPlato";
+                sqlCommand.Connection = connection.connect();
+                sqlCommand.Parameters.AddWithValue("@codigo", tipoPlato.code);
+                responseCode = sqlCommand.ExecuteNonQuery();
+                if (responseCode == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+            finally
+            {
+                connection.closeConnection();
+            }
+        }
     }
 }
