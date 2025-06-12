@@ -1,16 +1,5 @@
-﻿using Azure;
-using pe.com.muertelenta.bal;
+﻿using pe.com.muertelenta.bal;
 using pe.com.muertelenta.bo;
-using pe.com.muertelenta.dal;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace pe.com.muertelenta.ui
 {
@@ -18,18 +7,93 @@ namespace pe.com.muertelenta.ui
     public partial class frmPlato : Form
     {
         private PlatoBAL platoBAL = new PlatoBAL();
-        private List<PlatoBO> platoBOs;
+        private TipoPlatoBAL tipoPlatoBAL = new TipoPlatoBAL();
 
         public frmPlato()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
             txtCode.ReadOnly = true;
-            loadPlatos();
-            loadComboBoxElements();
+            BlockFormControllers();
+            AddDataGridViewRows(GetPlatos());
+            AddComboBoxOptions(GetTipoPlatos());
         }
 
-        private void loadPlatos()
+        private List<PlatoBO> GetPlatos()
+        {
+            return platoBAL.ShowPlato();
+        }
+
+        private List<TipoPlatoBO> GetTipoPlatos()
+        {
+            return tipoPlatoBAL.ShowTipoPlato();
+        }
+
+        private PlatoBO? GetPayload()
+        {
+            PlatoBO payload = new PlatoBO();
+            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+
+            string name = txtName.Text;
+            string description = txtDescription.Text.Trim();
+            int dishType = int.TryParse(cbDishType.SelectedValue.ToString(), out dishType) ? dishType : -1;
+            int quantity = int.TryParse(txtQuantity.Text, out quantity) ? quantity : 0;
+            double price = double.TryParse(txtPrice.Text, out price) ? price : 0;
+            bool state = chState.Checked;
+
+            if (
+                !string.IsNullOrEmpty(name) &&
+                !string.IsNullOrEmpty(description) &&
+                dishType > 0 && price > 0 && quantity > 0
+            )
+            {
+                payload.name = name;
+                payload.description = description;
+                payload.price = price;
+                payload.quantity = quantity;
+                payload.state = state;
+
+                tipoPlatoBO.code = Convert.ToInt32(cbDishType.SelectedValue.ToString());
+                payload.dishType = tipoPlatoBO;
+            }
+            else
+            {
+                MessageBox.Show("Los campos Nombre, Descripción, Precio, Cantidad, Tipo de Plato son requeridos");
+                payload = null;
+            }
+            return payload;
+        }
+
+        private void UnblockFormControllers(bool isEnabled = true)
+        {
+            txtName.Enabled = isEnabled;
+            txtDescription.Enabled = isEnabled;
+            txtPrice.Enabled = isEnabled;
+            txtQuantity.Enabled = isEnabled;
+            cbDishType.Enabled = isEnabled;
+            chState.Enabled = isEnabled;
+            btnAdd.Enabled = isEnabled;
+            btnUpdate.Enabled = isEnabled;
+            btnDelete.Enabled = isEnabled;
+        }
+
+        private void BlockFormControllers()
+        {
+            UnblockFormControllers(false);
+        }
+
+        private void ResetFields()
+        {
+            txtCode.Clear();
+            txtName.Clear();
+            txtDescription.Clear();
+            txtPrice.Clear();
+            txtQuantity.Clear();
+            cbDishType.SelectedIndex = -1;
+            chState.Checked = false;
+        }
+
+        private void AddDataGridViewRows(List<PlatoBO> platoBOs)
         {
             dgvPlato.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvPlato.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -54,8 +118,6 @@ namespace pe.com.muertelenta.ui
 
             dgvPlato.Columns.Add(stateColumn);
 
-            List<PlatoBO> platoBOs = platoBAL.ShowPlato();
-
             for (int i = 0; i < platoBOs.Count; i++)
             {
                 PlatoBO platoBO = platoBOs[i];
@@ -75,11 +137,8 @@ namespace pe.com.muertelenta.ui
             }
         }
 
-        private void loadComboBoxElements()
+        private void AddComboBoxOptions(List<TipoPlatoBO> tipoPlataBOs)
         {
-            TipoPlatoBAL tipoPlatoBAL = new TipoPlatoBAL();
-            List<TipoPlatoBO> tipoPlataBOs = tipoPlatoBAL.ShowTipoPlato();
-
             TipoPlatoBO tipoPlatoFirstValue = new TipoPlatoBO
             {
                 code = 0,
@@ -96,67 +155,101 @@ namespace pe.com.muertelenta.ui
             cbDishType.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
-        private void enableFieldsAndButtons(bool isEnabled)
-        {
-            txtCode.Enabled = isEnabled;
-            txtName.Enabled = isEnabled;
-            btnAdd.Enabled = isEnabled;
-            btnUpdate.Enabled = isEnabled;
-            btnDelete.Enabled = isEnabled;
-        }
-
         private void btnNew_Click(object sender, EventArgs e)
         {
-            enableFieldsAndButtons(false);
+            UnblockFormControllers();
             btnNew.Enabled = false;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            PlatoBO payload = new PlatoBO();
-            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
 
-            
-            
-            payload.name = txtName.Text;
-            payload.description = txtDescription.Text;
-            payload.price = Convert.ToDouble(txtPrice.Text);
-            payload.quantity = Convert.ToInt32(txtQuantity.Text);
-            payload.state = chState.Checked;
+            PlatoBO? payload = GetPayload();
+            bool isAddSuccess = platoBAL.AddPlato(payload);
 
-            tipoPlatoBO.code = Convert.ToInt32(cbDishType.SelectedValue.ToString());
-            payload.dishType = tipoPlatoBO;
-
-            bool response = platoBAL.AddPlato(payload);
-
-            if (response == true)
+            if (isAddSuccess)
             {
-                MessageBox.Show("Se registró el tipo de plato");
-                loadPlatos();
-                //clearFields();
-                enableFieldsAndButtons(false);
+                MessageBox.Show("Se registró el plato");
+                AddDataGridViewRows(GetPlatos());
+                ResetFields();
+                BlockFormControllers();
                 btnNew.Enabled = true;
             }
             else
             {
-                MessageBox.Show("No se resgistró el tipo de plato");
+                MessageBox.Show("No se resgistró el plato");
             }
-
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            PlatoBO? payload = GetPayload();
+            bool isUpdateSuccess = platoBAL.AddPlato(payload);
 
+            if (isUpdateSuccess)
+            {
+                MessageBox.Show("Se actualizó el plato");
+                AddDataGridViewRows(GetPlatos());
+                ResetFields();
+                BlockFormControllers();
+                btnNew.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("No se actualizó el plato");
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            PlatoBO platoBO = new PlatoBO();
+            bool response = false;
 
+            platoBO.code = Convert.ToInt32(txtCode.Text);
+
+            DialogResult dialogResult = MessageBox.Show(
+                "¿Seguro que quieres eliminar el plato?",
+                "Eliminando plato",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Error
+             );
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                response = platoBAL.DeletePlato(platoBO);
+                if (response == true)
+                {
+                    MessageBox.Show("Se eliminó plato");
+                    AddDataGridViewRows(GetPlatos());
+                    ResetFields();
+                    BlockFormControllers();    
+                    btnNew.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("No se eliminó el plato");
+                }
+            }
         }
 
         private void btnEnable_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void dgvPlato_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+            UnblockFormControllers();
+            btnAdd.Enabled = true;
+            DataGridViewRow selectedRow = dgvPlato.Rows[index];
+            txtCode.Text = selectedRow.Cells["code"].Value.ToString();
+            txtName.Text = selectedRow.Cells["name"].Value.ToString();
+            txtDescription.Text = selectedRow.Cells["description"].Value.ToString();
+            txtPrice.Text = selectedRow.Cells["price"].Value.ToString();
+            txtQuantity.Text = selectedRow.Cells["quantity"].Value.ToString();
+            cbDishType.Text = selectedRow.Cells["dishType"].Value.ToString();
+            chState.Checked = selectedRow.Cells["state"].Value.ToString() == "Habilitado" ? true : false;
         }
     }
 }

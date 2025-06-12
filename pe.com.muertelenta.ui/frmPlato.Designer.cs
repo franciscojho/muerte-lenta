@@ -216,6 +216,7 @@
             dgvPlato.RowHeadersWidth = 62;
             dgvPlato.Size = new Size(986, 353);
             dgvPlato.TabIndex = 20;
+            dgvPlato.CellClick += dgvPlato_CellClick;
             // 
             // chState
             // 
