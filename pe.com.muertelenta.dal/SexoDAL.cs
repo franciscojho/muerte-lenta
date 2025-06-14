@@ -12,7 +12,7 @@ namespace pe.com.muertelenta.dal
         public SexoDAL()
         {
             ProviderSetup.GetLookupItemsCommandText = "SP_MostrarSexo";
-            ProviderSetup.GetAllLookupItemsCommandText = "SP_MostrartTodoSexo";
+            ProviderSetup.GetAllLookupItemsCommandText = "SP_MostrarTodoSexo";
             ProviderSetup.AddLookupItemCommandText = "SP_RegistrarSexo";
             ProviderSetup.UpdateLookupItemCommandText = "SP_ActualizarSexo";
             ProviderSetup.EnableLookupItemCommandText = "SP_HabilitarSexo";

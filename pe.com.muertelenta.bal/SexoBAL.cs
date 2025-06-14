@@ -30,5 +30,10 @@ namespace pe.com.muertelenta.bal
         {
             return provider.DeleteSexo(rolBO);
         }
+
+        public bool EnableSexo(SexoBO rolBO)
+        {
+            return provider.EnableSexo(rolBO);
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace pe.com.muertelenta.ui
         {
             genders = provider.ShowSexo();
         }
-         
+
         private void UnblockFormControllers(bool isEnabled = true)
         {
             txtName.Enabled = isEnabled;
@@ -198,6 +198,19 @@ namespace pe.com.muertelenta.ui
                 txtName.Text = selectedRow.Cells["name"].Value.ToString();
                 cbState.Checked = selectedRow.Cells["state"].Value.ToString() == "Habilitado" ? true : false;
             }
+        }
+
+        private void btnEnable_Click(object sender, EventArgs e)
+        {
+            frmHabilitarSexo form = new frmHabilitarSexo();
+            form.FormClosed += CloseListener;
+            form.ShowDialog();
+        }
+
+        private void CloseListener(object sender, EventArgs e)
+        {
+            SetGenders();
+            AddDataGridViewRows(genders);
         }
     }
 }
