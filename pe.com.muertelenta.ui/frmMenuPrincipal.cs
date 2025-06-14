@@ -60,5 +60,17 @@ namespace pe.com.muertelenta.ui
             frmRol form = new frmRol();
             form.ShowDialog();
         }
+
+        private void tsmCliente_Click(object sender, EventArgs e)
+        {
+            frmCliente form = new frmCliente();
+            form.ShowDialog();
+        }
+
+        private void tsmEmpleado_Click(object sender, EventArgs e)
+        {
+            frmEmpleado form = new frmEmpleado();
+            form.ShowDialog();
+        }
     }
 }
