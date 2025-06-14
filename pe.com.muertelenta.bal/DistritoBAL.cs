@@ -36,5 +36,10 @@ namespace pe.com.muertelenta.bal
         {
             return distritoDAL.DeleteDistrito(distritoBO);
         }
+
+        public bool EnableDistrito(DistritoBO distritoBO)
+        {
+            return distritoDAL.EnableDistrito(distritoBO);
+        }
     }
 }
