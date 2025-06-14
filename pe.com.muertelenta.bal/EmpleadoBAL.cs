@@ -7,13 +7,13 @@ namespace pe.com.muertelenta.bal
     {
         private EmpleadoDAL empleadoDAL = new EmpleadoDAL();
 
-        public List<EmpleadoBO> ShowShowEmpleado()
+        public List<EmpleadoBO> GetEmployees()
         {
             return empleadoDAL.ShowEmpleado();
         }
 
 
-        public bool AddEmpleado(EmpleadoBO empleadoBO)
+        public bool AddEmployee(EmpleadoBO empleadoBO)
         {
             return empleadoDAL.AddEmpleado(empleadoBO);
         }
