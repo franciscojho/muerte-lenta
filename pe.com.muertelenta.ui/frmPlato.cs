@@ -242,7 +242,7 @@ namespace pe.com.muertelenta.ui
             int index = e.RowIndex;
             UnblockFormControllers();
             btnAdd.Enabled = true;
-            DataGridViewRow selectedRow = dgvPlato.Rows[index];
+            DataGridViewRow selectedRow = dgvPlato.Rows[index]; 
             txtCode.Text = selectedRow.Cells["code"].Value.ToString();
             txtName.Text = selectedRow.Cells["name"].Value.ToString();
             txtDescription.Text = selectedRow.Cells["description"].Value.ToString();

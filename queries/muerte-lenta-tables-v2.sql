@@ -208,7 +208,6 @@ diremp varchar(50)  not null,
 telemp varchar(7) not null,
 celemp varchar(9) not null,
 coremp varchar(40)  not null,
-sexemp varchar(9) not null,
 usuemp varchar(40)  not null,
 claemp varchar(40)  not null,
 estemp bit not null,
@@ -224,9 +223,9 @@ foreign key (codrol) references rol(codrol)
 go
 
 
-insert into empleado(nomemp,apepemp,apememp,dniemp,fecemp,diremp,telemp,celemp,coremp,sexemp,usuemp,claemp,estemp,coddis,codrol,codsex,codtipd)
+insert into empleado(nomemp,apepemp,apememp,dniemp,fecemp,diremp,telemp,celemp,coremp,usuemp,claemp,estemp,coddis,codrol,codsex,codtipd)
 values ('Mario Antonio', 'Huapalla','Morales','41526332','1982-02-17','Av. Luis Braille 1450','4253524','963258741',
-'mhuapalla@gmail.com','Masculino','mhuapalla','123456',1,15,1,1,1);
+'mhuapalla@gmail.com','mhuapalla','123456',1,15,1,1,1);
 go
 
 select * from empleado
@@ -245,7 +244,6 @@ dircli varchar(50)  not null,
 telcli varchar(7) not null,
 celcli varchar(9) not null,
 corcli varchar(40)  not null,
-sexcli varchar(9) not null,
 estcli bit not null,
 coddis int not null,
 codsex int not null,
@@ -254,6 +252,11 @@ foreign key (coddis) references distrito(coddis),
 foreign key (codsex) references sexo(codsex),
 foreign key (codtipd) references tipodocumento(codtipd)
 )
+go
+
+insert into cliente(nomcli,apepcli,apemcli,dnicli,feccli,dircli,telcli,celcli,corcli,estcli,coddis,codsex,codtipd)
+values ('Mario Antonio', 'Huapalla','Morales','41526332','1982-02-17','Av. Luis Braille 1450','4253524','963258741',
+'mhuapalla@gmail.com',1,15,1,1);
 go
 
 select * from cliente

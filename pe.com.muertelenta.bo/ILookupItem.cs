@@ -1,7 +1,7 @@
 ﻿
 namespace pe.com.muertelenta.bo
 {
-    public class RolBO : ILookupItem
+    public interface ILookupItem
     {
         public int code { get; set; }
         public string name { get; set; }
