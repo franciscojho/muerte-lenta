@@ -30,5 +30,10 @@ namespace pe.com.muertelenta.bal
         {
             return rolDAL.DeleteRol(rolBO);
         }
+
+        public bool EnableRol(RolBO rolBO)
+        {
+            return rolDAL.EnableRol(rolBO);
+        }
     }
 }

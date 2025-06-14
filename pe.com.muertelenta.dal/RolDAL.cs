@@ -11,7 +11,7 @@ namespace pe.com.muertelenta.dal
         public RolDAL()
         {
             ProviderSetup.GetLookupItemsCommandText = "SP_MostrarRol";
-            ProviderSetup.GetAllLookupItemsCommandText = "SP_MostrartTodoRol";
+            ProviderSetup.GetAllLookupItemsCommandText = "SP_MostrarTodoRol";
             ProviderSetup.AddLookupItemCommandText = "SP_RegistrarRol";
             ProviderSetup.UpdateLookupItemCommandText = "SP_ActualizarRol";
             ProviderSetup.EnableLookupItemCommandText = "SP_HabilitarRol";

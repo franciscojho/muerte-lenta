@@ -64,6 +64,7 @@
             btnEnable.TabIndex = 24;
             btnEnable.Text = "Habilitar";
             btnEnable.UseVisualStyleBackColor = true;
+            btnEnable.Click += btnEnable_Click;
             // 
             // btnDelete
             // 
