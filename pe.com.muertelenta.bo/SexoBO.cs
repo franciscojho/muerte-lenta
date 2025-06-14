@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace pe.com.muertelenta.bo
 {
-    public class SexoBO
+    public class SexoBO : ILookupItem
     {
         public int code { get; set; }
         public string name { get; set; }
