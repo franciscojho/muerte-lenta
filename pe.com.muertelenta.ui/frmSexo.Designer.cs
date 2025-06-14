@@ -53,6 +53,7 @@
             dgvData.RowHeadersWidth = 62;
             dgvData.Size = new Size(1060, 515);
             dgvData.TabIndex = 25;
+            dgvData.CellClick += dgvData_CellClick;
             // 
             // btnEnable
             // 
@@ -73,6 +74,7 @@
             btnDelete.TabIndex = 23;
             btnDelete.Text = "Eliminar";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnAdd
             // 
@@ -94,6 +96,7 @@
             btnUpdate.TabIndex = 21;
             btnUpdate.Text = "Actualizar";
             btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // btnNew
             // 

@@ -1,34 +1,30 @@
 ﻿using pe.com.muertelenta.bal;
 using pe.com.muertelenta.bo;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace pe.com.muertelenta.ui
 {
     public partial class frmSexo : Form
     {
-        private SexoBAL sexoBAL = new SexoBAL();
+        private SexoBAL provider = new SexoBAL();
+        List<SexoBO> genders = new List<SexoBO>();
 
         public frmSexo()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
             txtCode.ReadOnly = true;
-            enableFieldsAndButtons(false);
-            loadSexo();
-            customizedDataGridView();
+            BlockFormControllers();
+            SetGenders();
+            AddDataGridViewRows(genders);
         }
 
-        private void enableFieldsAndButtons(bool isEnabled)
+        private void SetGenders()
         {
-            txtCode.Enabled = isEnabled;
+            genders = provider.ShowSexo();
+        }
+         
+        private void UnblockFormControllers(bool isEnabled = true)
+        {
             txtName.Enabled = isEnabled;
             cbState.Enabled = isEnabled;
             btnAdd.Enabled = isEnabled;
@@ -36,7 +32,12 @@ namespace pe.com.muertelenta.ui
             btnDelete.Enabled = isEnabled;
         }
 
-        private void clearFields()
+        private void BlockFormControllers()
+        {
+            UnblockFormControllers(false);
+        }
+
+        private void ResetFields()
         {
             txtCode.Clear();
             txtName.Clear();
@@ -44,7 +45,7 @@ namespace pe.com.muertelenta.ui
             txtName.Focus();
         }
 
-        private void customizedDataGridView()
+        private void AddDataGridViewRows(List<SexoBO> genders)
         {
             dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -54,10 +55,7 @@ namespace pe.com.muertelenta.ui
             dgvData.ReadOnly = true;
 
             dgvData.Columns.Add("code", "Código");
-            dgvData.Columns["code"].DataPropertyName = "code";
-
             dgvData.Columns.Add("name", "Nombre");
-            dgvData.Columns["name"].DataPropertyName = "name";
 
             DataGridViewTextBoxColumn stateColumn = new DataGridViewTextBoxColumn
             {
@@ -67,14 +65,15 @@ namespace pe.com.muertelenta.ui
             };
 
             dgvData.Columns.Add(stateColumn);
-            dgvData.CellFormatting += (s, e) =>
+
+            for (int i = 0; i < genders.Count; i++)
             {
-                if (dgvData.Columns[e.ColumnIndex].Name == "state" && e.Value != null)
-                {
-                    e.Value = (bool)e.Value ? "Habilitado" : "Deshabilitado";
-                    e.FormattingApplied = true;
-                }
-            };
+                SexoBO gender = genders[i];
+                dgvData.Rows.Add();
+                dgvData.Rows[i].Cells["code"].Value = gender.code;
+                dgvData.Rows[i].Cells["name"].Value = gender.name;
+                dgvData.Rows[i].Cells["state"].Value = gender.state ? "Habilitado" : "Deshabilitado";
+            }
 
             foreach (DataGridViewColumn column in dgvData.Columns)
             {
@@ -82,41 +81,122 @@ namespace pe.com.muertelenta.ui
             }
         }
 
-        private void loadSexo()
+        private SexoBO? GetPayload()
         {
-            List<SexoBO> sexoBOs = sexoBAL.ShowAllSexo();
-            dgvData.DataSource = sexoBOs;
+            SexoBO payload = new SexoBO();
+            string name = txtName.Text.Trim();
+            int code = int.TryParse(txtCode.Text.Trim(), out code) ? code : 0;
+            bool state = cbState.Checked;
+
+            if (code != 0)
+            {
+                payload.code = code;
+            }
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                payload.name = name;
+                payload.state = state;
+            }
+            else
+            {
+                MessageBox.Show("El campo Nombre es requerido");
+                payload = null;
+            }
+            return payload;
         }
 
         private void btnNew_Click(object sender, EventArgs e)
         {
-            enableFieldsAndButtons(true);
+            UnblockFormControllers();
             btnNew.Enabled = false;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            SexoBO sexoBO = new SexoBO();
-            bool response = false;
+            SexoBO? payload = GetPayload();
+            bool isAddSuccess = provider.AddSexo(payload);
 
-            if (txtName.Text == "")
+            if (isAddSuccess)
             {
-                MessageBox.Show("Ingresa el nombre");
-                txtName.Focus();
+                MessageBox.Show("Se resgistró el sexo");
+                SetGenders();
+                AddDataGridViewRows(genders);
+                ResetFields();
+                BlockFormControllers();
+                btnNew.Enabled = true;
             }
             else
             {
-                sexoBO.name = txtName.Text;
-                sexoBO.state = cbState.Checked;
-                response = sexoBAL.addSexo(sexoBO);
+                MessageBox.Show("No se resgistró el sexo");
+            }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            SexoBO? payload = GetPayload();
+            bool isAddSuccess = provider.UpdateSexo(payload);
+
+            if (isAddSuccess)
+            {
+                MessageBox.Show("Se actualizó el sexo");
+                SetGenders();
+                AddDataGridViewRows(genders);
+                ResetFields();
+                BlockFormControllers();
+                btnNew.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("No se actualizó el sexo");
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            SexoBO gender = new SexoBO();
+            bool response = false;
+
+            gender.code = Convert.ToInt32(txtCode.Text);
+
+            DialogResult dialogResult = MessageBox.Show(
+                "¿Seguro que quieres eliminar el sexo?",
+                "Eliminando sexo",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Error
+             );
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                response = provider.DeleteSexo(gender);
                 if (response == true)
                 {
-                    MessageBox.Show("Se registró el sexo");
-                    loadSexo();
-                    clearFields();
-                    enableFieldsAndButtons(false);
+                    MessageBox.Show("Se eliminó sexo");
+                    SetGenders();
+                    AddDataGridViewRows(genders);
+                    ResetFields();
+                    BlockFormControllers();
                     btnNew.Enabled = true;
                 }
+                else
+                {
+                    MessageBox.Show("No se eliminó el sexo");
+                }
+            }
+        }
+
+        private void dgvData_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+            UnblockFormControllers();
+            btnAdd.Enabled = true;
+            DataGridViewRow selectedRow = dgvData.Rows[index];
+            Console.WriteLine(selectedRow.Cells["code"].Value);
+            if (selectedRow.Cells["code"].Value != null)
+            {
+                txtCode.Text = selectedRow.Cells["code"].Value.ToString();
+                txtName.Text = selectedRow.Cells["name"].Value.ToString();
+                cbState.Checked = selectedRow.Cells["state"].Value.ToString() == "Habilitado" ? true : false;
             }
         }
     }
