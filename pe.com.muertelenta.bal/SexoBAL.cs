@@ -1,30 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using pe.com.muertelenta.bo;
+﻿using pe.com.muertelenta.bo;
 using pe.com.muertelenta.dal;
 
 namespace pe.com.muertelenta.bal
 {
     public class SexoBAL
     {
-        private SexoDAL sexoDAL = new SexoDAL();
+        private SexoDAL provider = new SexoDAL();
 
         public List<SexoBO> ShowSexo()
         {
-            return sexoDAL.ShowSexo();
+            return provider.ShowSexo();
         }
 
         public List<SexoBO> ShowAllSexo()
         {
-            return sexoDAL.ShowAllSexo();
+            return provider.ShowAllSexo();
         }
 
-        public bool addSexo(SexoBO sexo)
+        public bool AddSexo(SexoBO rolBO)
         {
-            return sexoDAL.addSexo(sexo);
+            return provider.AddSexo(rolBO);
+        }
+        public bool UpdateSexo(SexoBO rolBO)
+        {
+            return provider.UpdateSexo(rolBO);
+        }
+
+        public bool DeleteSexo(SexoBO rolBO)
+        {
+            return provider.DeleteSexo(rolBO);
+        }
+
+        public bool EnableSexo(SexoBO rolBO)
+        {
+            return provider.EnableSexo(rolBO);
         }
     }
 }

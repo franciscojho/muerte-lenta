@@ -3,26 +3,26 @@ using pe.com.muertelenta.bo;
 
 namespace pe.com.muertelenta.ui
 {
-    public partial class frmHabilitarTipoPlato : Form
+    public partial class frmHabilitarRol : Form
     {
-        private TipoPlatoBAL tipoPlatoBAL = new TipoPlatoBAL();
-        List<TipoPlatoBO> dishTypes = new List<TipoPlatoBO>();
+        private RolBAL provider = new RolBAL();
+        List<RolBO> roles = new List<RolBO>();
         private int selectedCode;
 
-        public frmHabilitarTipoPlato()
+        public frmHabilitarRol()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
-            SetDishTypes();
-            AddDataGridViewRows(dishTypes);
+            SetRoles();
+            AddDataGridViewRows(roles);
         }
 
-        private void SetDishTypes()
+        private void SetRoles()
         {
-            dishTypes = tipoPlatoBAL.ShowAllTipoPlato();
+            roles = provider.ShowAllRol();
         }
 
-        private void AddDataGridViewRows(List<TipoPlatoBO> dishTypes)
+        private void AddDataGridViewRows(List<RolBO> roles)
         {
             dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -43,13 +43,13 @@ namespace pe.com.muertelenta.ui
 
             dgvData.Columns.Add(stateColumn);
 
-            for (int i = 0; i < dishTypes.Count; i++)
+            for (int i = 0; i < roles.Count; i++)
             {
-                TipoPlatoBO dishType = dishTypes[i];
+                RolBO role = roles[i];
                 dgvData.Rows.Add();
-                dgvData.Rows[i].Cells["code"].Value = dishType.code;
-                dgvData.Rows[i].Cells["name"].Value = dishType.name;
-                dgvData.Rows[i].Cells["state"].Value = dishType.state ? "Habilitado" : "Deshabilitado";
+                dgvData.Rows[i].Cells["code"].Value = role.code;
+                dgvData.Rows[i].Cells["name"].Value = role.name;
+                dgvData.Rows[i].Cells["state"].Value = role.state ? "Habilitado" : "Deshabilitado";
             }
 
             foreach (DataGridViewColumn column in dgvData.Columns)
@@ -60,58 +60,58 @@ namespace pe.com.muertelenta.ui
 
         private void btnEnable_Click(object sender, EventArgs e)
         {
-            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+            RolBO role = new RolBO();
             bool response = false;
 
             DialogResult dialogResult = MessageBox.Show(
-                "¿Seguro que quieres habilitar el tipo de plato?",
-                "Habilitando tipo de plato",
+                "¿Seguro que quieres habilitar el rol?",
+                "Habilitando rol",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error
              );
 
             if (dialogResult == DialogResult.Yes)
             {
-                tipoPlatoBO.code = selectedCode;
-                response = tipoPlatoBAL.EnableTipoPlato(tipoPlatoBO);
+                role.code = selectedCode;
+                response = provider.EnableRol(role);
                 if (response == true)
                 {
-                    MessageBox.Show("Se habilitó el tipo de plato");
-                    SetDishTypes();
-                    AddDataGridViewRows(dishTypes);
+                    MessageBox.Show("Se habilitó el rol");
+                    SetRoles();
+                    AddDataGridViewRows(roles);
                 }
                 else
                 {
-                    MessageBox.Show("No se habilitó el tipo de plato");
+                    MessageBox.Show("No se habilitó el rol");
                 }
             }
         }
 
         private void btnDisabled_Click(object sender, EventArgs e)
         {
-            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+            RolBO role = new RolBO();
             bool response = false;
 
             DialogResult dialogResult = MessageBox.Show(
-                "¿Seguro que quieres deshabilitar el tipo de plato?",
-                "Deshabilitando tipo de plato",
+                "¿Seguro que quieres deshabilitar el rol?",
+                "Deshabilitando rol",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error
              );
 
             if (dialogResult == DialogResult.Yes)
             {
-                tipoPlatoBO.code = selectedCode;
-                response = tipoPlatoBAL.DeleteTipoPlato(tipoPlatoBO);
+                role.code = selectedCode;
+                response = provider.DeleteRol(role);
                 if (response == true)
                 {
-                    MessageBox.Show("Se deshabilitó el tipo de plato");
-                    SetDishTypes();
-                    AddDataGridViewRows(dishTypes);
+                    MessageBox.Show("Se deshabilitó el rol");
+                    SetRoles();
+                    AddDataGridViewRows(roles);
                 }
                 else
                 {
-                    MessageBox.Show("No se deshabilitó el tipo de plato");
+                    MessageBox.Show("No se deshabilitó el rol");
                 }
             }
         }
@@ -121,7 +121,7 @@ namespace pe.com.muertelenta.ui
             this.Close();
         }
 
-        private void dgvTipoPlato_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvData_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = e.RowIndex;
             DataGridViewRow selectedRow = dgvData.Rows[index];

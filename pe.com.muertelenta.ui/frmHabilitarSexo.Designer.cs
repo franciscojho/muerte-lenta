@@ -1,6 +1,6 @@
 ﻿namespace pe.com.muertelenta.ui
 {
-    partial class frmHabilitarTipoPlato
+    partial class frmHabilitarSexo
     {
         /// <summary>
         /// Required designer variable.
@@ -28,73 +28,73 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnEnable = new Button();
-            btnDisabled = new Button();
-            btnGoBack = new Button();
             dgvData = new DataGridView();
+            btnGoBack = new Button();
+            btnDisabled = new Button();
+            btnEnable = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvData).BeginInit();
             SuspendLayout();
-            // 
-            // btnEnable
-            // 
-            btnEnable.Location = new Point(12, 12);
-            btnEnable.Name = "btnEnable";
-            btnEnable.Size = new Size(112, 34);
-            btnEnable.TabIndex = 0;
-            btnEnable.Text = "Habilitar";
-            btnEnable.UseVisualStyleBackColor = true;
-            btnEnable.Click += btnEnable_Click;
-            // 
-            // btnDisabled
-            // 
-            btnDisabled.Location = new Point(208, 12);
-            btnDisabled.Name = "btnDisabled";
-            btnDisabled.Size = new Size(127, 34);
-            btnDisabled.TabIndex = 1;
-            btnDisabled.Text = "Deshabilitar";
-            btnDisabled.UseVisualStyleBackColor = true;
-            btnDisabled.Click += btnDisabled_Click;
-            // 
-            // btnGoBack
-            // 
-            btnGoBack.Location = new Point(432, 12);
-            btnGoBack.Name = "btnGoBack";
-            btnGoBack.Size = new Size(112, 34);
-            btnGoBack.TabIndex = 2;
-            btnGoBack.Text = "Regresar";
-            btnGoBack.UseVisualStyleBackColor = true;
-            btnGoBack.Click += btnGoBack_Click;
             // 
             // dgvData
             // 
             dgvData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvData.Location = new Point(12, 61);
+            dgvData.Location = new Point(33, 78);
             dgvData.Name = "dgvData";
             dgvData.RowHeadersWidth = 62;
             dgvData.Size = new Size(532, 495);
-            dgvData.TabIndex = 3;
-            dgvData.CellClick += dgvTipoPlato_CellClick;
+            dgvData.TabIndex = 7;
+            dgvData.CellClick += dgvData_CellClick;
             // 
-            // frmHabilitarTipoPlato
+            // btnGoBack
+            // 
+            btnGoBack.Location = new Point(453, 29);
+            btnGoBack.Name = "btnGoBack";
+            btnGoBack.Size = new Size(112, 34);
+            btnGoBack.TabIndex = 6;
+            btnGoBack.Text = "Regresar";
+            btnGoBack.UseVisualStyleBackColor = true;
+            btnGoBack.Click += btnGoBack_Click;
+            // 
+            // btnDisabled
+            // 
+            btnDisabled.Location = new Point(229, 29);
+            btnDisabled.Name = "btnDisabled";
+            btnDisabled.Size = new Size(127, 34);
+            btnDisabled.TabIndex = 5;
+            btnDisabled.Text = "Deshabilitar";
+            btnDisabled.UseVisualStyleBackColor = true;
+            btnDisabled.Click += btnDisabled_Click;
+            // 
+            // btnEnable
+            // 
+            btnEnable.Location = new Point(33, 29);
+            btnEnable.Name = "btnEnable";
+            btnEnable.Size = new Size(112, 34);
+            btnEnable.TabIndex = 4;
+            btnEnable.Text = "Habilitar";
+            btnEnable.UseVisualStyleBackColor = true;
+            btnEnable.Click += btnEnable_Click;
+            // 
+            // frmHabilitarSexo
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(556, 568);
+            ClientSize = new Size(609, 606);
             Controls.Add(dgvData);
             Controls.Add(btnGoBack);
             Controls.Add(btnDisabled);
             Controls.Add(btnEnable);
-            Name = "frmHabilitarTipoPlato";
-            Text = "frmHabilitar";
+            Name = "frmHabilitarSexo";
+            Text = "frmSexoHabilitar";
             ((System.ComponentModel.ISupportInitialize)dgvData).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Button btnEnable;
-        private Button btnDisabled;
-        private Button btnGoBack;
         private DataGridView dgvData;
+        private Button btnGoBack;
+        private Button btnDisabled;
+        private Button btnEnable;
     }
 }

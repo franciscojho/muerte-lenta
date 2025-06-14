@@ -1,30 +1,40 @@
 ﻿using pe.com.muertelenta.bo;
 using pe.com.muertelenta.dal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace pe.com.muertelenta.bal
 {
     public class TipoDocumentoBAL
     {
-        private TipoDocumentoDAL tipoDocumentoDAL = new TipoDocumentoDAL();
+        private TipoDocumentoDAL provider = new TipoDocumentoDAL();
 
         public List<TipoDocumentoBO> ShowTipoDocumento()
         {
-            return tipoDocumentoDAL.ShowTipoDocumento();
+            return provider.ShowTipoDocumento();
         }
 
         public List<TipoDocumentoBO> ShowAllTipoDocumento()
         {
-            return tipoDocumentoDAL.ShowAllTipoDocumento();
+            return provider.ShowAllTipoDocumento();
         }
 
-        public bool AddTipoDocumento(TipoDocumentoBO tipoDocumentoBO)
+        public bool AddTipoDocumento(TipoDocumentoBO documentType)
         {
-            return tipoDocumentoDAL.AddTipoDocumento(tipoDocumentoBO);
+            return provider.AddTipoDocumento(documentType);
+        }
+
+        public bool UpdateTipoDocumento(TipoDocumentoBO documentType)
+        {
+            return provider.UpdateTipoDocumento(documentType);
+        }
+
+        public bool DeleteTipoDocumento(TipoDocumentoBO documentType)
+        {
+            return provider.DeleteTipoDocumento(documentType);
+        }
+
+        public bool EnableTipoDocumento(TipoDocumentoBO documentType)
+        {
+            return provider.EnableTipoDocumento(documentType);
         }
     }
 }

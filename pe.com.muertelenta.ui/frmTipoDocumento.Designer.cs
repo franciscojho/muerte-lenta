@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dgvTipoDocumento = new DataGridView();
+            dgvData = new DataGridView();
             btnEnable = new Button();
             btnDelete = new Button();
             btnAdd = new Button();
@@ -41,18 +41,19 @@
             txtCode = new TextBox();
             label2 = new Label();
             label1 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvTipoDocumento).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvData).BeginInit();
             SuspendLayout();
             // 
-            // dgvTipoDocumento
+            // dgvData
             // 
-            dgvTipoDocumento.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTipoDocumento.Location = new Point(51, 309);
-            dgvTipoDocumento.Margin = new Padding(4, 5, 4, 5);
-            dgvTipoDocumento.Name = "dgvTipoDocumento";
-            dgvTipoDocumento.RowHeadersWidth = 62;
-            dgvTipoDocumento.Size = new Size(1060, 515);
-            dgvTipoDocumento.TabIndex = 25;
+            dgvData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvData.Location = new Point(51, 309);
+            dgvData.Margin = new Padding(4, 5, 4, 5);
+            dgvData.Name = "dgvData";
+            dgvData.RowHeadersWidth = 62;
+            dgvData.Size = new Size(1060, 515);
+            dgvData.TabIndex = 25;
+            dgvData.CellClick += dgvData_CellClick;
             // 
             // btnEnable
             // 
@@ -63,6 +64,7 @@
             btnEnable.TabIndex = 24;
             btnEnable.Text = "Habilitar";
             btnEnable.UseVisualStyleBackColor = true;
+            btnEnable.Click += btnEnable_Click;
             // 
             // btnDelete
             // 
@@ -73,6 +75,7 @@
             btnDelete.TabIndex = 23;
             btnDelete.Text = "Eliminar";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnAdd
             // 
@@ -94,6 +97,7 @@
             btnUpdate.TabIndex = 21;
             btnUpdate.Text = "Actualizar";
             btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // btnNew
             // 
@@ -179,7 +183,7 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1164, 859);
-            Controls.Add(dgvTipoDocumento);
+            Controls.Add(dgvData);
             Controls.Add(btnEnable);
             Controls.Add(btnDelete);
             Controls.Add(btnAdd);
@@ -194,14 +198,14 @@
             Controls.Add(label1);
             Name = "frmTipoDocumento";
             Text = "frmTipoDocumento";
-            ((System.ComponentModel.ISupportInitialize)dgvTipoDocumento).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvData).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private DataGridView dgvTipoDocumento;
+        private DataGridView dgvData;
         private Button btnEnable;
         private Button btnDelete;
         private Button btnAdd;

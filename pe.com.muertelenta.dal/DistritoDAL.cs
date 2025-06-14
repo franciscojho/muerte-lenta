@@ -1,110 +1,72 @@
 ﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using Microsoft.Data.SqlClient;
 using pe.com.muertelenta.bo;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 
 namespace pe.com.muertelenta.dal
 {
     public class DistritoDAL
     {
-        private ConnectionDAL connection = new ConnectionDAL();
-        private SqlCommand sqlCommand;
-        private SqlDataReader reader;
+        private SetupLookupItemDAL ProviderSetup = new SetupLookupItemDAL();
+        private LookupItemDAL LookupProvider;
+
+        public DistritoDAL()
+        {
+            ProviderSetup.GetLookupItemsCommandText = "SP_MostrarDistrito";
+            ProviderSetup.GetAllLookupItemsCommandText = "SP_MostrartTodoDistrito";
+            ProviderSetup.AddLookupItemCommandText = "SP_RegistrarDistrito";
+            ProviderSetup.UpdateLookupItemCommandText = "SP_ActualizarDistrito";
+            ProviderSetup.EnableLookupItemCommandText = "SP_HabilitarDistrito";
+            ProviderSetup.DeleteLookupItemCommandText = "SP_EliminarDistrito";
+            ProviderSetup.DbSuffix = "dis";
+            LookupProvider = new LookupItemDAL(ProviderSetup);
+        }
 
         public List<DistritoBO> ShowDistrito() 
         {
-            List<DistritoBO> distritoBOs = new List<DistritoBO>();
-            try
+            List<LookupItemBO> items = LookupProvider.GetLookupItems();
+            List<DistritoBO> districts = items.Select(item => new DistritoBO
             {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_MostrarDistrito";
-                sqlCommand.Connection = connection.connect();
-                reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    DistritoBO distrito = new DistritoBO();
-                    distrito.code = Convert.ToInt32(reader["coddis"].ToString());
-                    distrito.name = reader["nomdis"].ToString();
-                    distrito.state = Convert.ToBoolean(reader["estdis"].ToString());
-                    distritoBOs.Add(distrito);
-                }   
-                return distritoBOs;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return null;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+                code = item.code,
+                name = item.name,
+                state = item.state
+            }).ToList();
+
+            return districts;
         }
 
         public List<DistritoBO> ShowAllDistrito()
         {
-            List<DistritoBO> distritoBOs = new List<DistritoBO>();
-            try
+            List<LookupItemBO> items = LookupProvider.GetAllLookupItems();
+            List<DistritoBO> districts = items.Select(item => new DistritoBO
             {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_MostrarDistritoTodo";
-                sqlCommand.Connection = connection.connect();
-                reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    DistritoBO distrito = new DistritoBO();
-                    distrito.code = Convert.ToInt32(reader["coddis"].ToString());
-                    distrito.name = reader["nomdis"].ToString();
-                    distrito.state = Convert.ToBoolean(reader["estdis"].ToString());
-                    distritoBOs.Add(distrito);
-                }
-                return distritoBOs;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return null;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+                code = item.code,
+                name = item.name,
+                state = item.state
+            }).ToList();
+
+            return districts;
         }
 
-        public bool AddDistrito(DistritoBO distrito)
+        public bool AddDistrito(DistritoBO district)
         {
-            int responseCode = 0;
-            try
-            {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_RegistrarDistrito";
-                sqlCommand.Connection = connection.connect();
-                sqlCommand.Parameters.AddWithValue("@nombre", distrito.name);
-                sqlCommand.Parameters.AddWithValue("@estado", distrito.state);
-                responseCode = sqlCommand.ExecuteNonQuery();
-                if (responseCode == 1)
-                {
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+            return LookupProvider.AddLookupItem(district);
+        }
+
+        public bool UpdateDistrito(DistritoBO district)
+        {
+            return LookupProvider.UpdateLookupItem(district);
+        }
+
+        public bool EnableDistrito(DistritoBO district)
+        {
+            return LookupProvider.EnableLookupItem(district);
+        }
+
+        public bool DeleteDistrito(DistritoBO district)
+        {
+            return LookupProvider.DeleteLookupItem(district);
         }
     }
 }

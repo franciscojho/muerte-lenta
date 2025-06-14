@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using pe.com.muertelenta.bo;
+﻿using pe.com.muertelenta.bo;
 using pe.com.muertelenta.dal;
 
 namespace pe.com.muertelenta.bal
@@ -24,22 +19,22 @@ namespace pe.com.muertelenta.bal
 
         public bool AddTipoPlato(TipoPlatoBO tipoPlatoBO)
         {
-            return tipoPlatoDal.addTipoPlato(tipoPlatoBO);
+            return tipoPlatoDal.AddTipoPlato(tipoPlatoBO);
         }
 
         public bool UpdateTipoPlato(TipoPlatoBO tipoPlatoBO)
         {
-            return tipoPlatoDal.updateTipoPlato(tipoPlatoBO);
+            return tipoPlatoDal.UpdateTipoPlato(tipoPlatoBO);
         }
 
         public bool DeleteTipoPlato(TipoPlatoBO tipoPlatoBO)
         {
-            return tipoPlatoDal.deleteTipoPlato(tipoPlatoBO);
+            return tipoPlatoDal.DeleteTipoPlato(tipoPlatoBO);
         }
 
         public bool EnableTipoPlato(TipoPlatoBO tipoPlatoBO)
         {
-            return tipoPlatoDal.enableTipoPlato(tipoPlatoBO);
+            return tipoPlatoDal.EnableTipoPlato(tipoPlatoBO);
         }
     }
 }

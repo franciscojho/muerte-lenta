@@ -3,26 +3,26 @@ using pe.com.muertelenta.bo;
 
 namespace pe.com.muertelenta.ui
 {
-    public partial class frmHabilitarTipoPlato : Form
+    public partial class frmHabilitarSexo : Form
     {
-        private TipoPlatoBAL tipoPlatoBAL = new TipoPlatoBAL();
-        List<TipoPlatoBO> dishTypes = new List<TipoPlatoBO>();
+        private SexoBAL provider = new SexoBAL();
+        List<SexoBO> genders = new List<SexoBO>();
         private int selectedCode;
 
-        public frmHabilitarTipoPlato()
+        public frmHabilitarSexo()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
-            SetDishTypes();
-            AddDataGridViewRows(dishTypes);
+            SetGenders();
+            AddDataGridViewRows(genders);
         }
 
-        private void SetDishTypes()
+        private void SetGenders()
         {
-            dishTypes = tipoPlatoBAL.ShowAllTipoPlato();
+            genders = provider.ShowAllSexo();
         }
 
-        private void AddDataGridViewRows(List<TipoPlatoBO> dishTypes)
+        private void AddDataGridViewRows(List<SexoBO> genders)
         {
             dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -43,13 +43,13 @@ namespace pe.com.muertelenta.ui
 
             dgvData.Columns.Add(stateColumn);
 
-            for (int i = 0; i < dishTypes.Count; i++)
+            for (int i = 0; i < genders.Count; i++)
             {
-                TipoPlatoBO dishType = dishTypes[i];
+                SexoBO gender = genders[i];
                 dgvData.Rows.Add();
-                dgvData.Rows[i].Cells["code"].Value = dishType.code;
-                dgvData.Rows[i].Cells["name"].Value = dishType.name;
-                dgvData.Rows[i].Cells["state"].Value = dishType.state ? "Habilitado" : "Deshabilitado";
+                dgvData.Rows[i].Cells["code"].Value = gender.code;
+                dgvData.Rows[i].Cells["name"].Value = gender.name;
+                dgvData.Rows[i].Cells["state"].Value = gender.state ? "Habilitado" : "Deshabilitado";
             }
 
             foreach (DataGridViewColumn column in dgvData.Columns)
@@ -60,58 +60,58 @@ namespace pe.com.muertelenta.ui
 
         private void btnEnable_Click(object sender, EventArgs e)
         {
-            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+            SexoBO gender = new SexoBO();
             bool response = false;
 
             DialogResult dialogResult = MessageBox.Show(
-                "¿Seguro que quieres habilitar el tipo de plato?",
-                "Habilitando tipo de plato",
+                "¿Seguro que quieres habilitar el sexo?",
+                "Habilitando sexo",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error
              );
 
             if (dialogResult == DialogResult.Yes)
             {
-                tipoPlatoBO.code = selectedCode;
-                response = tipoPlatoBAL.EnableTipoPlato(tipoPlatoBO);
+                gender.code = selectedCode;
+                response = provider.EnableSexo(gender);
                 if (response == true)
                 {
-                    MessageBox.Show("Se habilitó el tipo de plato");
-                    SetDishTypes();
-                    AddDataGridViewRows(dishTypes);
+                    MessageBox.Show("Se habilitó el sexo");
+                    SetGenders();
+                    AddDataGridViewRows(genders);
                 }
                 else
                 {
-                    MessageBox.Show("No se habilitó el tipo de plato");
+                    MessageBox.Show("No se habilitó el sexo");
                 }
             }
         }
 
         private void btnDisabled_Click(object sender, EventArgs e)
         {
-            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+            SexoBO gender = new SexoBO();
             bool response = false;
 
             DialogResult dialogResult = MessageBox.Show(
-                "¿Seguro que quieres deshabilitar el tipo de plato?",
-                "Deshabilitando tipo de plato",
+                "¿Seguro que quieres deshabilitar el sexo?",
+                "Deshabilitando sexo",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error
              );
 
             if (dialogResult == DialogResult.Yes)
             {
-                tipoPlatoBO.code = selectedCode;
-                response = tipoPlatoBAL.DeleteTipoPlato(tipoPlatoBO);
+                gender.code = selectedCode;
+                response = provider.DeleteSexo(gender);
                 if (response == true)
                 {
-                    MessageBox.Show("Se deshabilitó el tipo de plato");
-                    SetDishTypes();
-                    AddDataGridViewRows(dishTypes);
+                    MessageBox.Show("Se deshabilitó el sexo");
+                    SetGenders();
+                    AddDataGridViewRows(genders);
                 }
                 else
                 {
-                    MessageBox.Show("No se deshabilitó el tipo de plato");
+                    MessageBox.Show("No se deshabilitó el sexo");
                 }
             }
         }
@@ -121,7 +121,7 @@ namespace pe.com.muertelenta.ui
             this.Close();
         }
 
-        private void dgvTipoPlato_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvData_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = e.RowIndex;
             DataGridViewRow selectedRow = dgvData.Rows[index];

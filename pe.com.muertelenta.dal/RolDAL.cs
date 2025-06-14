@@ -1,109 +1,69 @@
-﻿using Microsoft.Data.SqlClient;
-using pe.com.muertelenta.bo;
-using System;
-using System.Collections.Generic;
+﻿using pe.com.muertelenta.bo;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace pe.com.muertelenta.dal
 {
     public class RolDAL
     {
-        private ConnectionDAL connection = new ConnectionDAL();
-        private SqlCommand sqlCommand;
-        private SqlDataReader reader;
+        private SetupLookupItemDAL ProviderSetup = new SetupLookupItemDAL();
+        private LookupItemDAL LookupProvider;
+
+        public RolDAL()
+        {
+            ProviderSetup.GetLookupItemsCommandText = "SP_MostrarRol";
+            ProviderSetup.GetAllLookupItemsCommandText = "SP_MostrarTodoRol";
+            ProviderSetup.AddLookupItemCommandText = "SP_RegistrarRol";
+            ProviderSetup.UpdateLookupItemCommandText = "SP_ActualizarRol";
+            ProviderSetup.EnableLookupItemCommandText = "SP_HabilitarRol";
+            ProviderSetup.DeleteLookupItemCommandText = "SP_EliminarRol";
+            ProviderSetup.DbSuffix = "rol";
+            LookupProvider = new LookupItemDAL(ProviderSetup);
+        }
 
         public List<RolBO> ShowRol()
         {
-            List<RolBO> rolBOs = new List<RolBO>();
-            try
+            List<LookupItemBO> items = LookupProvider.GetLookupItems();
+            List<RolBO> roles = items.Select(item => new RolBO
             {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_MostrarRol";
-                sqlCommand.Connection = connection.connect();
-                reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    RolBO rol= new RolBO();
-                    rol.code = Convert.ToInt32(reader["codrol"].ToString());
-                    rol.name = reader["nomrol"].ToString();
-                    rol.state = Convert.ToBoolean(reader["estrol"].ToString());
-                    rolBOs.Add(rol);
-                }
-                return rolBOs;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return null;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+                code = item.code,
+                name = item.name,
+                state = item.state
+            }).ToList();
+
+            return roles;
         }
 
         public List<RolBO> ShowAllRol()
         {
-            List<RolBO> rolBOs = new List<RolBO>();
-            try
+            List<LookupItemBO> items = LookupProvider.GetAllLookupItems();
+            List<RolBO> roles = items.Select(item => new RolBO
             {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_MostrarTodoRol";
-                sqlCommand.Connection = connection.connect();
-                reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    RolBO rol = new RolBO();
-                    rol.code = Convert.ToInt32(reader["codrol"].ToString());
-                    rol.name = reader["nomrol"].ToString();
-                    rol.state = Convert.ToBoolean(reader["estrol"].ToString());
-                    rolBOs.Add(rol);
-                }
-                return rolBOs;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return null;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+                code = item.code,
+                name = item.name,
+                state = item.state
+            }).ToList();
+
+            return roles;
         }
 
-        public bool AddRol(RolBO rol)
+        public bool AddRol(RolBO role)
         {
-            int responseCode = 0;
-            try
-            {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_RegistrarRol";
-                sqlCommand.Connection = connection.connect();
-                sqlCommand.Parameters.AddWithValue("@nombre", rol.name);
-                sqlCommand.Parameters.AddWithValue("@estado", rol.state);
-                responseCode = sqlCommand.ExecuteNonQuery();
-                if (responseCode == 1)
-                {
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+            return LookupProvider.AddLookupItem(role);
+        }
+
+        public bool UpdateRol(RolBO role)
+        {
+            return LookupProvider.UpdateLookupItem(role);
+        }
+
+        public bool EnableRol(RolBO role)
+        {
+            return LookupProvider.EnableLookupItem(role);
+        }
+
+        public bool DeleteRol(RolBO role)
+        {
+            return LookupProvider.DeleteLookupItem(role);
         }
     }
 }

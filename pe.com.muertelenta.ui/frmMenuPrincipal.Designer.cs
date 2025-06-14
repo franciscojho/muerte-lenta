@@ -37,6 +37,7 @@
             tsmDistrito = new ToolStripMenuItem();
             tsmSexo = new ToolStripMenuItem();
             tsmTipoDeDocumento = new ToolStripMenuItem();
+            tsmRol = new ToolStripMenuItem();
             tsmMantenimientoDoble = new ToolStripMenuItem();
             tsmProceso = new ToolStripMenuItem();
             registrarPedidoToolStripMenuItem = new ToolStripMenuItem();
@@ -45,7 +46,8 @@
             tsmUtilidades = new ToolStripMenuItem();
             calculadoraToolStripMenuItem = new ToolStripMenuItem();
             blockDeNotasToolStripMenuItem = new ToolStripMenuItem();
-            tsmRol = new ToolStripMenuItem();
+            tsmCliente = new ToolStripMenuItem();
+            tsmEmpleado = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -83,7 +85,7 @@
             // 
             // tsmMantenimientoSimple
             // 
-            tsmMantenimientoSimple.DropDownItems.AddRange(new ToolStripItem[] { tsmTipoPlato, tsmDistrito, tsmSexo, tsmTipoDeDocumento, tsmRol });
+            tsmMantenimientoSimple.DropDownItems.AddRange(new ToolStripItem[] { tsmTipoPlato, tsmDistrito, tsmSexo, tsmTipoDeDocumento, tsmRol, tsmCliente, tsmEmpleado });
             tsmMantenimientoSimple.Name = "tsmMantenimientoSimple";
             tsmMantenimientoSimple.Size = new Size(207, 29);
             tsmMantenimientoSimple.Text = "Mantenimiento Simple";
@@ -115,6 +117,13 @@
             tsmTipoDeDocumento.Size = new Size(273, 34);
             tsmTipoDeDocumento.Text = "Tipo de Documento";
             tsmTipoDeDocumento.Click += tsmTipoDeDocumento_Click;
+            // 
+            // tsmRol
+            // 
+            tsmRol.Name = "tsmRol";
+            tsmRol.Size = new Size(273, 34);
+            tsmRol.Text = "Rol";
+            tsmRol.Click += tsmRol_Click;
             // 
             // tsmMantenimientoDoble
             // 
@@ -166,12 +175,19 @@
             blockDeNotasToolStripMenuItem.Size = new Size(233, 34);
             blockDeNotasToolStripMenuItem.Text = "Block de Notas";
             // 
-            // tsmRol
+            // tsmCliente
             // 
-            tsmRol.Name = "tsmRol";
-            tsmRol.Size = new Size(273, 34);
-            tsmRol.Text = "Rol";
-            tsmRol.Click += tsmRol_Click;
+            tsmCliente.Name = "tsmCliente";
+            tsmCliente.Size = new Size(273, 34);
+            tsmCliente.Text = "Cliente";
+            tsmCliente.Click += tsmCliente_Click;
+            // 
+            // tsmEmpleado
+            // 
+            tsmEmpleado.Name = "tsmEmpleado";
+            tsmEmpleado.Size = new Size(273, 34);
+            tsmEmpleado.Text = "Empleado";
+            tsmEmpleado.Click += tsmEmpleado_Click;
             // 
             // frmMenuPrincipal
             // 
@@ -210,5 +226,7 @@
         private ToolStripMenuItem calculadoraToolStripMenuItem;
         private ToolStripMenuItem blockDeNotasToolStripMenuItem;
         private ToolStripMenuItem tsmRol;
+        private ToolStripMenuItem tsmCliente;
+        private ToolStripMenuItem tsmEmpleado;
     }
 }

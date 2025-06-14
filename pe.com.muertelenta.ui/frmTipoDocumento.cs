@@ -1,34 +1,30 @@
 ﻿using pe.com.muertelenta.bal;
 using pe.com.muertelenta.bo;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace pe.com.muertelenta.ui
 {
     public partial class frmTipoDocumento : Form
     {
-        private TipoDocumentoBAL tipoDocumentoBAL = new TipoDocumentoBAL();
+        private TipoDocumentoBAL provider = new TipoDocumentoBAL();
+        List<TipoDocumentoBO> documentTypes = new List<TipoDocumentoBO>();
 
         public frmTipoDocumento()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
             txtCode.ReadOnly = true;
-            enableFieldsAndButtons(false);
-            loadTipoPlato();
-            customizedDataGridView();
+            BlockFormControllers();
+            SetDocumentTypes();
+            AddDataGridViewRows(documentTypes);
         }
 
-        private void enableFieldsAndButtons(bool isEnabled)
+        private void SetDocumentTypes()
         {
-            txtCode.Enabled = isEnabled;
+            documentTypes = provider.ShowTipoDocumento();
+        }
+
+        private void UnblockFormControllers(bool isEnabled = true)
+        {
             txtName.Enabled = isEnabled;
             cbState.Enabled = isEnabled;
             btnAdd.Enabled = isEnabled;
@@ -36,7 +32,12 @@ namespace pe.com.muertelenta.ui
             btnDelete.Enabled = isEnabled;
         }
 
-        private void clearFields()
+        private void BlockFormControllers()
+        {
+            UnblockFormControllers(false);
+        }
+
+        private void ResetFields()
         {
             txtCode.Clear();
             txtName.Clear();
@@ -44,20 +45,17 @@ namespace pe.com.muertelenta.ui
             txtName.Focus();
         }
 
-        private void customizedDataGridView()
+        private void AddDataGridViewRows(List<TipoDocumentoBO> documentTypes)
         {
-            dgvTipoDocumento.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvTipoDocumento.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvTipoDocumento.AutoGenerateColumns = false;
-            dgvTipoDocumento.Columns.Clear();
-            dgvTipoDocumento.ClearSelection();
-            dgvTipoDocumento.ReadOnly = true;
+            dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvData.AutoGenerateColumns = false;
+            dgvData.Columns.Clear();
+            dgvData.ClearSelection();
+            dgvData.ReadOnly = true;
 
-            dgvTipoDocumento.Columns.Add("code", "Código");
-            dgvTipoDocumento.Columns["code"].DataPropertyName = "code";
-
-            dgvTipoDocumento.Columns.Add("name", "Nombre");
-            dgvTipoDocumento.Columns["name"].DataPropertyName = "name";
+            dgvData.Columns.Add("code", "Código");
+            dgvData.Columns.Add("name", "Nombre");
 
             DataGridViewTextBoxColumn stateColumn = new DataGridViewTextBoxColumn
             {
@@ -66,58 +64,153 @@ namespace pe.com.muertelenta.ui
                 DataPropertyName = "state"
             };
 
-            dgvTipoDocumento.Columns.Add(stateColumn);
-            dgvTipoDocumento.CellFormatting += (s, e) =>
-            {
-                if (dgvTipoDocumento.Columns[e.ColumnIndex].Name == "state" && e.Value != null)
-                {
-                    e.Value = (bool)e.Value ? "Habilitado" : "Deshabilitado";
-                    e.FormattingApplied = true;
-                }
-            };
+            dgvData.Columns.Add(stateColumn);
 
-            foreach (DataGridViewColumn column in dgvTipoDocumento.Columns)
+            for (int i = 0; i < documentTypes.Count; i++)
+            {
+                TipoDocumentoBO documentType = documentTypes[i];
+                dgvData.Rows.Add();
+                dgvData.Rows[i].Cells["code"].Value = documentType.code;
+                dgvData.Rows[i].Cells["name"].Value = documentType.name;
+                dgvData.Rows[i].Cells["state"].Value = documentType.state ? "Habilitado" : "Deshabilitado";
+            }
+
+            foreach (DataGridViewColumn column in dgvData.Columns)
             {
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
         }
 
-        private void loadTipoPlato()
+        private TipoDocumentoBO? GetPayload()
         {
-            List<TipoDocumentoBO> tipoDocumentosBOs = tipoDocumentoBAL.ShowAllTipoDocumento();
-            dgvTipoDocumento.DataSource = tipoDocumentosBOs;
+            TipoDocumentoBO payload = new TipoDocumentoBO();
+            string name = txtName.Text.Trim();
+            int code = int.TryParse(txtCode.Text.Trim(), out code) ? code : 0;
+            bool state = cbState.Checked;
+
+            if (code != 0)
+            {
+                payload.code = code;
+            }
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                payload.name = name;
+                payload.state = state;
+            }
+            else
+            {
+                MessageBox.Show("El campo Nombre es requerido");
+                payload = null;
+            }
+            return payload;
         }
 
         private void btnNew_Click(object sender, EventArgs e)
         {
-            enableFieldsAndButtons(true);
+            UnblockFormControllers();
             btnNew.Enabled = false;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            TipoDocumentoBO tipoDocumentoBO = new TipoDocumentoBO();
-            bool response = false;
+            TipoDocumentoBO? payload = GetPayload();
+            bool isAddSuccess = provider.AddTipoDocumento(payload);
 
-            if (txtName.Text == "")
+            if (isAddSuccess)
             {
-                MessageBox.Show("Ingresa el nombre");
-                txtName.Focus();
+                MessageBox.Show("Se resgistró el Tipo de Documento");
+                SetDocumentTypes();
+                AddDataGridViewRows(documentTypes);
+                ResetFields();
+                BlockFormControllers();
+                btnNew.Enabled = true;
             }
             else
             {
-                tipoDocumentoBO.name = txtName.Text;
-                tipoDocumentoBO.state = cbState.Checked;
-                response = tipoDocumentoBAL.AddTipoDocumento(tipoDocumentoBO);
+                MessageBox.Show("No se resgistró el Tipo de Documento");
+            }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            TipoDocumentoBO? payload = GetPayload();
+            bool isAddSuccess = provider.UpdateTipoDocumento(payload);
+
+            if (isAddSuccess)
+            {
+                MessageBox.Show("Se actualizó el Tipo de Documento");
+                SetDocumentTypes();
+                AddDataGridViewRows(documentTypes);
+                ResetFields();
+                BlockFormControllers();
+                btnNew.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("No se actualizó el Tipo de Documento");
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            TipoDocumentoBO documentType = new TipoDocumentoBO();
+            bool response = false;
+
+            documentType.code = Convert.ToInt32(txtCode.Text);
+
+            DialogResult dialogResult = MessageBox.Show(
+                "¿Seguro que quieres eliminar el Tipo de Documento?",
+                "Eliminando Tipo de Documento",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Error
+             );
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                response = provider.DeleteTipoDocumento(documentType);
                 if (response == true)
                 {
-                    MessageBox.Show("Se registró el tipo de documento");
-                    loadTipoPlato();
-                    clearFields();
-                    enableFieldsAndButtons(false);
+                    MessageBox.Show("Se eliminó Tipo de Documento");
+                    SetDocumentTypes();
+                    AddDataGridViewRows(documentTypes);
+                    ResetFields();
+                    BlockFormControllers();
                     btnNew.Enabled = true;
                 }
+                else
+                {
+                    MessageBox.Show("No se eliminó el Tipo de Documento");
+                }
             }
+        }
+
+        private void dgvData_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+            UnblockFormControllers();
+            btnAdd.Enabled = true;
+            DataGridViewRow selectedRow = dgvData.Rows[index];
+            Console.WriteLine(selectedRow.Cells["code"].Value);
+            if (selectedRow.Cells["code"].Value != null)
+            {
+                txtCode.Text = selectedRow.Cells["code"].Value.ToString();
+                txtName.Text = selectedRow.Cells["name"].Value.ToString();
+                cbState.Checked = selectedRow.Cells["state"].Value.ToString() == "Habilitado" ? true : false;
+            }
+        }
+
+        private void btnEnable_Click(object sender, EventArgs e)
+        {
+            frmHabilitarTipoDocumento form = new frmHabilitarTipoDocumento();
+            form.FormClosed += CloseListener;
+            form.ShowDialog();
+        }
+
+        private void CloseListener(object sender, EventArgs e)
+        {
+            SetDocumentTypes();
+            AddDataGridViewRows(documentTypes);
         }
     }
 }

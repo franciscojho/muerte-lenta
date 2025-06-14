@@ -3,26 +3,26 @@ using pe.com.muertelenta.bo;
 
 namespace pe.com.muertelenta.ui
 {
-    public partial class frmHabilitarTipoPlato : Form
+    public partial class frmHabilitarDistrito : Form
     {
-        private TipoPlatoBAL tipoPlatoBAL = new TipoPlatoBAL();
-        List<TipoPlatoBO> dishTypes = new List<TipoPlatoBO>();
+        private DistritoBAL provider = new DistritoBAL();
+        List<DistritoBO> districts = new List<DistritoBO>();
         private int selectedCode;
 
-        public frmHabilitarTipoPlato()
+        public frmHabilitarDistrito()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
-            SetDishTypes();
-            AddDataGridViewRows(dishTypes);
+            SetDistricts();
+            AddDataGridViewRows(districts);
         }
 
-        private void SetDishTypes()
+        private void SetDistricts()
         {
-            dishTypes = tipoPlatoBAL.ShowAllTipoPlato();
+            districts = provider.ShowAllDistrito();
         }
 
-        private void AddDataGridViewRows(List<TipoPlatoBO> dishTypes)
+        private void AddDataGridViewRows(List<DistritoBO> districts)
         {
             dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -43,13 +43,13 @@ namespace pe.com.muertelenta.ui
 
             dgvData.Columns.Add(stateColumn);
 
-            for (int i = 0; i < dishTypes.Count; i++)
+            for (int i = 0; i < districts.Count; i++)
             {
-                TipoPlatoBO dishType = dishTypes[i];
+                DistritoBO district = districts[i];
                 dgvData.Rows.Add();
-                dgvData.Rows[i].Cells["code"].Value = dishType.code;
-                dgvData.Rows[i].Cells["name"].Value = dishType.name;
-                dgvData.Rows[i].Cells["state"].Value = dishType.state ? "Habilitado" : "Deshabilitado";
+                dgvData.Rows[i].Cells["code"].Value = district.code;
+                dgvData.Rows[i].Cells["name"].Value = district.name;
+                dgvData.Rows[i].Cells["state"].Value = district.state ? "Habilitado" : "Deshabilitado";
             }
 
             foreach (DataGridViewColumn column in dgvData.Columns)
@@ -60,58 +60,58 @@ namespace pe.com.muertelenta.ui
 
         private void btnEnable_Click(object sender, EventArgs e)
         {
-            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+            DistritoBO district = new DistritoBO();
             bool response = false;
 
             DialogResult dialogResult = MessageBox.Show(
-                "¿Seguro que quieres habilitar el tipo de plato?",
-                "Habilitando tipo de plato",
+                "¿Seguro que quieres habilitar el distrito?",
+                "Habilitando distrito",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error
              );
 
             if (dialogResult == DialogResult.Yes)
             {
-                tipoPlatoBO.code = selectedCode;
-                response = tipoPlatoBAL.EnableTipoPlato(tipoPlatoBO);
+                district.code = selectedCode;
+                response = provider.EnableDistrito(district);
                 if (response == true)
                 {
-                    MessageBox.Show("Se habilitó el tipo de plato");
-                    SetDishTypes();
-                    AddDataGridViewRows(dishTypes);
+                    MessageBox.Show("Se habilitó el distrito");
+                    SetDistricts();
+                    AddDataGridViewRows(districts);
                 }
                 else
                 {
-                    MessageBox.Show("No se habilitó el tipo de plato");
+                    MessageBox.Show("No se habilitó el distrito");
                 }
             }
         }
 
         private void btnDisabled_Click(object sender, EventArgs e)
         {
-            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+            DistritoBO district = new DistritoBO();
             bool response = false;
 
             DialogResult dialogResult = MessageBox.Show(
-                "¿Seguro que quieres deshabilitar el tipo de plato?",
-                "Deshabilitando tipo de plato",
+                "¿Seguro que quieres deshabilitar el distrito?",
+                "Deshabilitando distrito",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error
              );
 
             if (dialogResult == DialogResult.Yes)
             {
-                tipoPlatoBO.code = selectedCode;
-                response = tipoPlatoBAL.DeleteTipoPlato(tipoPlatoBO);
+                district.code = selectedCode;
+                response = provider.DeleteDistrito(district);
                 if (response == true)
                 {
-                    MessageBox.Show("Se deshabilitó el tipo de plato");
-                    SetDishTypes();
-                    AddDataGridViewRows(dishTypes);
+                    MessageBox.Show("Se deshabilitó el distrito");
+                    SetDistricts();
+                    AddDataGridViewRows(districts);
                 }
                 else
                 {
-                    MessageBox.Show("No se deshabilitó el tipo de plato");
+                    MessageBox.Show("No se deshabilitó el distrito");
                 }
             }
         }
@@ -121,7 +121,7 @@ namespace pe.com.muertelenta.ui
             this.Close();
         }
 
-        private void dgvTipoPlato_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvData_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = e.RowIndex;
             DataGridViewRow selectedRow = dgvData.Rows[index];

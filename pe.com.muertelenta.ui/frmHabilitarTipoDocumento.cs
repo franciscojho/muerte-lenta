@@ -3,26 +3,26 @@ using pe.com.muertelenta.bo;
 
 namespace pe.com.muertelenta.ui
 {
-    public partial class frmHabilitarTipoPlato : Form
+    public partial class frmHabilitarTipoDocumento : Form
     {
-        private TipoPlatoBAL tipoPlatoBAL = new TipoPlatoBAL();
-        List<TipoPlatoBO> dishTypes = new List<TipoPlatoBO>();
+        private TipoDocumentoBAL provider = new TipoDocumentoBAL();
+        List<TipoDocumentoBO> documentTypes = new List<TipoDocumentoBO>();
         private int selectedCode;
 
-        public frmHabilitarTipoPlato()
+        public frmHabilitarTipoDocumento()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
-            SetDishTypes();
-            AddDataGridViewRows(dishTypes);
+            SetDocumentTypes();
+            AddDataGridViewRows(documentTypes);
         }
 
-        private void SetDishTypes()
+        private void SetDocumentTypes()
         {
-            dishTypes = tipoPlatoBAL.ShowAllTipoPlato();
+            documentTypes = provider.ShowAllTipoDocumento();
         }
 
-        private void AddDataGridViewRows(List<TipoPlatoBO> dishTypes)
+        private void AddDataGridViewRows(List<TipoDocumentoBO> documentTypes)
         {
             dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -43,13 +43,13 @@ namespace pe.com.muertelenta.ui
 
             dgvData.Columns.Add(stateColumn);
 
-            for (int i = 0; i < dishTypes.Count; i++)
+            for (int i = 0; i < documentTypes.Count; i++)
             {
-                TipoPlatoBO dishType = dishTypes[i];
+                TipoDocumentoBO documentType = documentTypes[i];
                 dgvData.Rows.Add();
-                dgvData.Rows[i].Cells["code"].Value = dishType.code;
-                dgvData.Rows[i].Cells["name"].Value = dishType.name;
-                dgvData.Rows[i].Cells["state"].Value = dishType.state ? "Habilitado" : "Deshabilitado";
+                dgvData.Rows[i].Cells["code"].Value = documentType.code;
+                dgvData.Rows[i].Cells["name"].Value = documentType.name;
+                dgvData.Rows[i].Cells["state"].Value = documentType.state ? "Habilitado" : "Deshabilitado";
             }
 
             foreach (DataGridViewColumn column in dgvData.Columns)
@@ -60,58 +60,58 @@ namespace pe.com.muertelenta.ui
 
         private void btnEnable_Click(object sender, EventArgs e)
         {
-            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+            TipoDocumentoBO documentType = new TipoDocumentoBO();
             bool response = false;
 
             DialogResult dialogResult = MessageBox.Show(
-                "¿Seguro que quieres habilitar el tipo de plato?",
-                "Habilitando tipo de plato",
+                "¿Seguro que quieres habilitar el tipo de documento?",
+                "Habilitando tipo de documento",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error
              );
 
             if (dialogResult == DialogResult.Yes)
             {
-                tipoPlatoBO.code = selectedCode;
-                response = tipoPlatoBAL.EnableTipoPlato(tipoPlatoBO);
+                documentType.code = selectedCode;
+                response = provider.EnableTipoDocumento(documentType);
                 if (response == true)
                 {
-                    MessageBox.Show("Se habilitó el tipo de plato");
-                    SetDishTypes();
-                    AddDataGridViewRows(dishTypes);
+                    MessageBox.Show("Se habilitó el tipo de documento");
+                    SetDocumentTypes();
+                    AddDataGridViewRows(documentTypes);
                 }
                 else
                 {
-                    MessageBox.Show("No se habilitó el tipo de plato");
+                    MessageBox.Show("No se habilitó el tipo de documento");
                 }
             }
         }
 
         private void btnDisabled_Click(object sender, EventArgs e)
         {
-            TipoPlatoBO tipoPlatoBO = new TipoPlatoBO();
+            TipoDocumentoBO documentType = new TipoDocumentoBO();
             bool response = false;
 
             DialogResult dialogResult = MessageBox.Show(
-                "¿Seguro que quieres deshabilitar el tipo de plato?",
-                "Deshabilitando tipo de plato",
+                "¿Seguro que quieres deshabilitar el tipo de documento?",
+                "Deshabilitando tipo de documento",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error
              );
 
             if (dialogResult == DialogResult.Yes)
             {
-                tipoPlatoBO.code = selectedCode;
-                response = tipoPlatoBAL.DeleteTipoPlato(tipoPlatoBO);
+                documentType.code = selectedCode;
+                response = provider.DeleteTipoDocumento(documentType);
                 if (response == true)
                 {
-                    MessageBox.Show("Se deshabilitó el tipo de plato");
-                    SetDishTypes();
-                    AddDataGridViewRows(dishTypes);
+                    MessageBox.Show("Se deshabilitó el tipo de documento");
+                    SetDocumentTypes();
+                    AddDataGridViewRows(documentTypes);
                 }
                 else
                 {
-                    MessageBox.Show("No se deshabilitó el tipo de plato");
+                    MessageBox.Show("No se deshabilitó el tipo de documento");
                 }
             }
         }
@@ -121,7 +121,7 @@ namespace pe.com.muertelenta.ui
             this.Close();
         }
 
-        private void dgvTipoPlato_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvData_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = e.RowIndex;
             DataGridViewRow selectedRow = dgvData.Rows[index];

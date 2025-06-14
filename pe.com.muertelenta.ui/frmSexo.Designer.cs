@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dgvSexo = new DataGridView();
+            dgvData = new DataGridView();
             btnEnable = new Button();
             btnDelete = new Button();
             btnAdd = new Button();
@@ -41,18 +41,19 @@
             txtCode = new TextBox();
             label2 = new Label();
             label1 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvSexo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvData).BeginInit();
             SuspendLayout();
             // 
-            // dgvSexo
+            // dgvData
             // 
-            dgvSexo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSexo.Location = new Point(61, 314);
-            dgvSexo.Margin = new Padding(4, 5, 4, 5);
-            dgvSexo.Name = "dgvSexo";
-            dgvSexo.RowHeadersWidth = 62;
-            dgvSexo.Size = new Size(1060, 515);
-            dgvSexo.TabIndex = 25;
+            dgvData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvData.Location = new Point(61, 314);
+            dgvData.Margin = new Padding(4, 5, 4, 5);
+            dgvData.Name = "dgvData";
+            dgvData.RowHeadersWidth = 62;
+            dgvData.Size = new Size(1060, 515);
+            dgvData.TabIndex = 25;
+            dgvData.CellClick += dgvData_CellClick;
             // 
             // btnEnable
             // 
@@ -63,6 +64,7 @@
             btnEnable.TabIndex = 24;
             btnEnable.Text = "Habilitar";
             btnEnable.UseVisualStyleBackColor = true;
+            btnEnable.Click += btnEnable_Click;
             // 
             // btnDelete
             // 
@@ -73,6 +75,7 @@
             btnDelete.TabIndex = 23;
             btnDelete.Text = "Eliminar";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnAdd
             // 
@@ -94,6 +97,7 @@
             btnUpdate.TabIndex = 21;
             btnUpdate.Text = "Actualizar";
             btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // btnNew
             // 
@@ -179,7 +183,7 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1187, 872);
-            Controls.Add(dgvSexo);
+            Controls.Add(dgvData);
             Controls.Add(btnEnable);
             Controls.Add(btnDelete);
             Controls.Add(btnAdd);
@@ -194,14 +198,14 @@
             Controls.Add(label1);
             Name = "frmSexo";
             Text = "frmSexo";
-            ((System.ComponentModel.ISupportInitialize)dgvSexo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvData).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private DataGridView dgvSexo;
+        private DataGridView dgvData;
         private Button btnEnable;
         private Button btnDelete;
         private Button btnAdd;

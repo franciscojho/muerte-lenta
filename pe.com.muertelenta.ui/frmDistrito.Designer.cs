@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dgvDistrito = new DataGridView();
+            dgvData = new DataGridView();
             btnEnable = new Button();
             btnDelete = new Button();
             btnAdd = new Button();
@@ -45,18 +45,19 @@
             label6 = new Label();
             label7 = new Label();
             label8 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvDistrito).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvData).BeginInit();
             SuspendLayout();
             // 
-            // dgvDistrito
+            // dgvData
             // 
-            dgvDistrito.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDistrito.Location = new Point(45, 290);
-            dgvDistrito.Margin = new Padding(4, 5, 4, 5);
-            dgvDistrito.Name = "dgvDistrito";
-            dgvDistrito.RowHeadersWidth = 62;
-            dgvDistrito.Size = new Size(1060, 515);
-            dgvDistrito.TabIndex = 25;
+            dgvData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvData.Location = new Point(45, 290);
+            dgvData.Margin = new Padding(4, 5, 4, 5);
+            dgvData.Name = "dgvData";
+            dgvData.RowHeadersWidth = 62;
+            dgvData.Size = new Size(1060, 515);
+            dgvData.TabIndex = 25;
+            dgvData.CellClick += dgvDistrito_CellClick;
             // 
             // btnEnable
             // 
@@ -67,6 +68,7 @@
             btnEnable.TabIndex = 24;
             btnEnable.Text = "Habilitar";
             btnEnable.UseVisualStyleBackColor = true;
+            btnEnable.Click += btnEnable_Click;
             // 
             // btnDelete
             // 
@@ -77,6 +79,7 @@
             btnDelete.TabIndex = 23;
             btnDelete.Text = "Eliminar";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnAdd
             // 
@@ -98,6 +101,7 @@
             btnUpdate.TabIndex = 21;
             btnUpdate.Text = "Actualizar";
             btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // btnNew
             // 
@@ -228,7 +232,7 @@
             Controls.Add(label7);
             Controls.Add(label8);
             Controls.Add(label5);
-            Controls.Add(dgvDistrito);
+            Controls.Add(dgvData);
             Controls.Add(btnEnable);
             Controls.Add(btnDelete);
             Controls.Add(btnAdd);
@@ -243,14 +247,14 @@
             Controls.Add(label1);
             Name = "frmDistrito";
             Text = "frmDistrito";
-            ((System.ComponentModel.ISupportInitialize)dgvDistrito).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvData).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private DataGridView dgvDistrito;
+        private DataGridView dgvData;
         private Button btnEnable;
         private Button btnDelete;
         private Button btnAdd;
