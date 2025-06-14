@@ -11,7 +11,6 @@ namespace pe.com.muertelenta.dal
         private SetupLookupItemDAL ProviderSetup = new SetupLookupItemDAL();
         private LookupItemDAL LookupProvider;
 
-
         public DistritoDAL()
         {
             ProviderSetup.GetLookupItemsCommandText = "SP_MostrarDistrito";

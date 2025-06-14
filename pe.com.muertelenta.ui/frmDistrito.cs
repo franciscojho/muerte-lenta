@@ -1,20 +1,11 @@
 ﻿using pe.com.muertelenta.bal;
 using pe.com.muertelenta.bo;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace pe.com.muertelenta.ui
 {
     public partial class frmDistrito : Form
     {
-        private DistritoBAL distritoBAL = new DistritoBAL();
+        private DistritoBAL provider = new DistritoBAL();
         List<DistritoBO> districts = new List<DistritoBO>();
 
         public frmDistrito()
@@ -29,7 +20,7 @@ namespace pe.com.muertelenta.ui
 
         private void SetDistricts()
         {
-            districts = distritoBAL.ShowDistrito();
+            districts = provider.ShowDistrito();
         }
 
 
@@ -47,8 +38,7 @@ namespace pe.com.muertelenta.ui
             UnblockFormControllers(false);
         }
 
-
-        private void clearFields()
+        private void ResetFields()
         {
             txtCode.Clear();
             txtName.Clear();
@@ -92,6 +82,31 @@ namespace pe.com.muertelenta.ui
             }
         }
 
+        private DistritoBO? GetPayload()
+        {
+            DistritoBO payload = new DistritoBO();
+            string name = txtName.Text.Trim();
+            int code = int.TryParse(txtCode.Text.Trim(), out code) ? code : 0;
+            bool state = cbState.Checked;
+
+            if (code != 0)
+            {
+                payload.code = code;
+            }
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                payload.name = name;
+                payload.state = state;
+            }
+            else
+            {
+                MessageBox.Show("El campo Nombre es requerido");
+                payload = null;
+            }
+            return payload;
+        }
+
         private void btnNew_Click(object sender, EventArgs e)
         {
             UnblockFormControllers();
@@ -100,27 +115,73 @@ namespace pe.com.muertelenta.ui
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            DistritoBO distritoBO = new DistritoBO();
-            bool response = false;
+            DistritoBO? payload = GetPayload();
+            bool isAddSuccess = provider.AddDistrito(payload);
 
-            if (txtName.Text == "")
+            if (isAddSuccess)
             {
-                MessageBox.Show("Ingresa el nombre");
-                txtName.Focus();
+                MessageBox.Show("Se resgistró el distrito");
+                SetDistricts();
+                AddDataGridViewRows(districts);
+                ResetFields();
+                BlockFormControllers();
+                btnNew.Enabled = true;
             }
             else
             {
-                distritoBO.name = txtName.Text;
-                distritoBO.state = cbState.Checked;
-                response = distritoBAL.AddDistrito(distritoBO);
+                MessageBox.Show("No se resgistró el distrito");
+            }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            DistritoBO? payload = GetPayload();
+            bool isAddSuccess = provider.UpdateDistrito(payload);
+
+            if (isAddSuccess)
+            {
+                MessageBox.Show("Se actualizó el distrito");
+                SetDistricts();
+                AddDataGridViewRows(districts);
+                ResetFields();
+                BlockFormControllers();
+                btnNew.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("No se actualizó el distrito");
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            DistritoBO district = new DistritoBO();
+            bool response = false;
+
+            district.code = Convert.ToInt32(txtCode.Text);
+
+            DialogResult dialogResult = MessageBox.Show(
+                "¿Seguro que quieres eliminar el distrito?",
+                "Eliminando distrito",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Error
+             );
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                response = provider.DeleteDistrito(district);
                 if (response == true)
                 {
-                    MessageBox.Show("Se registró el distrito");
+                    MessageBox.Show("Se eliminó distrito");
                     SetDistricts();
                     AddDataGridViewRows(districts);
-                    clearFields();
+                    ResetFields();
                     BlockFormControllers();
                     btnNew.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("No se eliminó el distrito");
                 }
             }
         }
@@ -131,9 +192,13 @@ namespace pe.com.muertelenta.ui
             UnblockFormControllers();
             btnAdd.Enabled = true;
             DataGridViewRow selectedRow = dgvData.Rows[index];
-            txtCode.Text = selectedRow.Cells["code"].Value.ToString();
-            txtName.Text = selectedRow.Cells["name"].Value.ToString();
-            cbState.Checked = selectedRow.Cells["state"].Value.ToString() == "Habilitado" ? true : false;
+            Console.WriteLine(selectedRow.Cells["code"].Value);
+            if (selectedRow.Cells["code"].Value != null)
+            {
+                txtCode.Text = selectedRow.Cells["code"].Value.ToString();
+                txtName.Text = selectedRow.Cells["name"].Value.ToString();
+                cbState.Checked = selectedRow.Cells["state"].Value.ToString() == "Habilitado" ? true : false;
+            }
         }
     }
 }

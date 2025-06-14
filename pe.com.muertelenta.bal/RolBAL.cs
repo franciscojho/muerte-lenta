@@ -1,10 +1,5 @@
 ﻿using pe.com.muertelenta.bo;
 using pe.com.muertelenta.dal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace pe.com.muertelenta.bal
 {
@@ -21,9 +16,19 @@ namespace pe.com.muertelenta.bal
         {
             return rolDAL.ShowAllRol();
         }
+
         public bool AddRol(RolBO rolBO)
         {
             return rolDAL.AddRol(rolBO);
+        }
+        public bool UpdateRol(RolBO rolBO)
+        {
+            return rolDAL.UpdateRol(rolBO);
+        }
+
+        public bool DeleteRol(RolBO rolBO)
+        {
+            return rolDAL.DeleteRol(rolBO);
         }
     }
 }

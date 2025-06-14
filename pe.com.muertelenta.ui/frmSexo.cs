@@ -46,18 +46,18 @@ namespace pe.com.muertelenta.ui
 
         private void customizedDataGridView()
         {
-            dgvSexo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvSexo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvSexo.AutoGenerateColumns = false;
-            dgvSexo.Columns.Clear();
-            dgvSexo.ClearSelection();
-            dgvSexo.ReadOnly = true;
+            dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvData.AutoGenerateColumns = false;
+            dgvData.Columns.Clear();
+            dgvData.ClearSelection();
+            dgvData.ReadOnly = true;
 
-            dgvSexo.Columns.Add("code", "Código");
-            dgvSexo.Columns["code"].DataPropertyName = "code";
+            dgvData.Columns.Add("code", "Código");
+            dgvData.Columns["code"].DataPropertyName = "code";
 
-            dgvSexo.Columns.Add("name", "Nombre");
-            dgvSexo.Columns["name"].DataPropertyName = "name";
+            dgvData.Columns.Add("name", "Nombre");
+            dgvData.Columns["name"].DataPropertyName = "name";
 
             DataGridViewTextBoxColumn stateColumn = new DataGridViewTextBoxColumn
             {
@@ -66,17 +66,17 @@ namespace pe.com.muertelenta.ui
                 DataPropertyName = "state"
             };
 
-            dgvSexo.Columns.Add(stateColumn);
-            dgvSexo.CellFormatting += (s, e) =>
+            dgvData.Columns.Add(stateColumn);
+            dgvData.CellFormatting += (s, e) =>
             {
-                if (dgvSexo.Columns[e.ColumnIndex].Name == "state" && e.Value != null)
+                if (dgvData.Columns[e.ColumnIndex].Name == "state" && e.Value != null)
                 {
                     e.Value = (bool)e.Value ? "Habilitado" : "Deshabilitado";
                     e.FormattingApplied = true;
                 }
             };
 
-            foreach (DataGridViewColumn column in dgvSexo.Columns)
+            foreach (DataGridViewColumn column in dgvData.Columns)
             {
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
@@ -85,7 +85,7 @@ namespace pe.com.muertelenta.ui
         private void loadSexo()
         {
             List<SexoBO> sexoBOs = sexoBAL.ShowAllSexo();
-            dgvSexo.DataSource = sexoBOs;
+            dgvData.DataSource = sexoBOs;
         }
 
         private void btnNew_Click(object sender, EventArgs e)
