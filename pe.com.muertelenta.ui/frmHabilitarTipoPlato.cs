@@ -1,16 +1,5 @@
 ﻿using pe.com.muertelenta.bal;
 using pe.com.muertelenta.bo;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace pe.com.muertelenta.ui
 {
@@ -129,8 +118,7 @@ namespace pe.com.muertelenta.ui
 
         private void btnGoBack_Click(object sender, EventArgs e)
         {
-            frmTipoPlato form = new frmTipoPlato();
-            form.ShowDialog();
+            this.Close();
         }
 
         private void dgvTipoPlato_CellClick(object sender, DataGridViewCellEventArgs e)

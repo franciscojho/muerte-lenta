@@ -11,182 +11,65 @@ namespace pe.com.muertelenta.dal
 {
     public class TipoPlatoDAL
     {
-        private ConnectionDAL connection = new ConnectionDAL();
-        private SqlCommand sqlCommand;
-        private SqlDataReader reader;
+        private SetupLookupItemDAL ProviderSetup = new SetupLookupItemDAL();
+        private LookupItemDAL LookupProvider;
 
-        public List<TipoPlatoBO> ShowTipoPlato() {
-            List<TipoPlatoBO> tipoPlatoBOs = new List<TipoPlatoBO>();
-            try {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_MostrarTipoPlato";
-                sqlCommand.Connection = connection.connect();
-                reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    TipoPlatoBO tipoPlato = new TipoPlatoBO();
-                    tipoPlato.code = Convert.ToInt32(reader["codtipp"].ToString());
-                    tipoPlato.name = reader["nomtipp"].ToString();
-                    tipoPlato.state = Convert.ToBoolean(reader["esttipp"].ToString());
-                    tipoPlatoBOs.Add(tipoPlato);
-                }
-                return tipoPlatoBOs;
-            } catch (Exception ex)
+        public TipoPlatoDAL()
+        {
+            ProviderSetup.GetLookupItemsCommandText = "SP_MostrarTipoPlato";
+            ProviderSetup.GetAllLookupItemsCommandText = "SP_MostrarTipoPlatoTodo";
+            ProviderSetup.AddLookupItemCommandText = "SP_RegistrarTipoPlato";
+            ProviderSetup.UpdateLookupItemCommandText = "SP_ActualizarTipoPlato";
+            ProviderSetup.EnableLookupItemCommandText = "SP_HabilitarTipPlato";
+            ProviderSetup.DeleteLookupItemCommandText = "SP_EliminarTipoPlato";
+            ProviderSetup.DbSuffix = "tipp";
+            LookupProvider = new LookupItemDAL(ProviderSetup);
+        }
+
+        public List<TipoPlatoBO> ShowTipoPlato()
+        {
+            List<LookupItemBO> items = LookupProvider.GetLookupItems();
+            List<TipoPlatoBO> dishTypes = items.Select(item => new TipoPlatoBO
             {
-                Console.WriteLine(ex.ToString());
-                return null;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+                code = item.code,
+                name = item.name,
+                state = item.state
+            }).ToList();
+
+            return dishTypes;
         }
 
         public List<TipoPlatoBO> ShowAllTipoPlato()
         {
-            List<TipoPlatoBO> tipoPlatoBOs = new List<TipoPlatoBO>();
-            try
+            List<LookupItemBO> items = LookupProvider.GetAllLookupItems();
+            List<TipoPlatoBO> dishTypes = items.Select(item => new TipoPlatoBO
             {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_MostrarTipoPlatoTodo";
-                sqlCommand.Connection = connection.connect();
-                reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    TipoPlatoBO tipoPlato = new TipoPlatoBO();
-                    tipoPlato.code = Convert.ToInt32(reader["codtipp"].ToString());
-                    tipoPlato.name = reader["nomtipp"].ToString();
-                    tipoPlato.state = Convert.ToBoolean(reader["esttipp"].ToString());
-                    tipoPlatoBOs.Add(tipoPlato);
-                }
-                return tipoPlatoBOs;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return null;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+                code = item.code,
+                name = item.name,
+                state = item.state
+            }).ToList();
+
+            return dishTypes;
         }
 
-        public bool addTipoPlato(TipoPlatoBO tipoPlato)
+        public bool AddTipoPlato(TipoPlatoBO dishType)
         {
-            int responseCode = 0;
-            try
-            {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_RegistrarTipoPlato";
-                sqlCommand.Connection = connection.connect();
-                sqlCommand.Parameters.AddWithValue("@nombre", tipoPlato.name);
-                sqlCommand.Parameters.AddWithValue("@estado", tipoPlato.state);
-                responseCode = sqlCommand.ExecuteNonQuery();
-                if (responseCode == 1)
-                {
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+            return LookupProvider.AddLookupItem(dishType);
         }
 
-        public bool updateTipoPlato(TipoPlatoBO tipoPlato)
+        public bool UpdateTipoPlato(TipoPlatoBO dishType)
         {
-            int responseCode = 0;
-            try
-            {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_ActualizarTipoPlato";
-                sqlCommand.Connection = connection.connect();
-                sqlCommand.Parameters.AddWithValue("@codigo", tipoPlato.code);
-                sqlCommand.Parameters.AddWithValue("@nombre", tipoPlato.name);
-                sqlCommand.Parameters.AddWithValue("@estado", tipoPlato.state);
-                responseCode = sqlCommand.ExecuteNonQuery();
-                if (responseCode == 1)
-                {
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+            return LookupProvider.UpdateLookupItem(dishType);
         }
 
-        public bool deleteTipoPlato(TipoPlatoBO tipoPlato)
+        public bool EnableTipoPlato(TipoPlatoBO dishType)
         {
-            int responseCode = 0;
-            try
-            {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_EliminarTipoPlato";
-                sqlCommand.Connection = connection.connect();
-                sqlCommand.Parameters.AddWithValue("@codigo", tipoPlato.code);
-                responseCode = sqlCommand.ExecuteNonQuery();
-                if (responseCode == 1)
-                {
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+            return LookupProvider.EnableLookupItem(dishType);
         }
 
-        public bool enableTipoPlato(TipoPlatoBO tipoPlato)
+        public bool DeleteTipoPlato(TipoPlatoBO dishType)
         {
-            int responseCode = 0;
-            try
-            {
-                sqlCommand = new SqlCommand();
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_HabilitarTipPlato";
-                sqlCommand.Connection = connection.connect();
-                sqlCommand.Parameters.AddWithValue("@codigo", tipoPlato.code);
-                responseCode = sqlCommand.ExecuteNonQuery();
-                if (responseCode == 1)
-                {
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-            finally
-            {
-                connection.closeConnection();
-            }
+            return LookupProvider.DeleteLookupItem(dishType);
         }
     }
 }

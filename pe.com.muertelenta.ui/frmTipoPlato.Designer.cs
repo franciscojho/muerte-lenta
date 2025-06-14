@@ -40,8 +40,8 @@
             btnAdd = new Button();
             btnDelete = new Button();
             btnEnable = new Button();
-            dgvTipoPlato = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dgvTipoPlato).BeginInit();
+            dgvData = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvData).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -167,23 +167,23 @@
             btnEnable.UseVisualStyleBackColor = true;
             btnEnable.Click += btnEnable_Click;
             // 
-            // dgvTipoPlato
+            // dgvData
             // 
-            dgvTipoPlato.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTipoPlato.Location = new Point(40, 318);
-            dgvTipoPlato.Margin = new Padding(4, 5, 4, 5);
-            dgvTipoPlato.Name = "dgvTipoPlato";
-            dgvTipoPlato.RowHeadersWidth = 62;
-            dgvTipoPlato.Size = new Size(1060, 515);
-            dgvTipoPlato.TabIndex = 12;
-            dgvTipoPlato.CellClick += dgvTipoPlato_CellClick;
+            dgvData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvData.Location = new Point(40, 318);
+            dgvData.Margin = new Padding(4, 5, 4, 5);
+            dgvData.Name = "dgvData";
+            dgvData.RowHeadersWidth = 62;
+            dgvData.Size = new Size(1060, 515);
+            dgvData.TabIndex = 12;
+            dgvData.CellClick += dgvData_CellClick;
             // 
             // frmTipoPlato
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1143, 887);
-            Controls.Add(dgvTipoPlato);
+            Controls.Add(dgvData);
             Controls.Add(btnEnable);
             Controls.Add(btnDelete);
             Controls.Add(btnAdd);
@@ -199,7 +199,7 @@
             Margin = new Padding(4, 5, 4, 5);
             Name = "frmTipoPlato";
             Text = "frmTipoPlato";
-            ((System.ComponentModel.ISupportInitialize)dgvTipoPlato).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvData).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -218,6 +218,6 @@
         private Button btnAdd;
         private Button btnDelete;
         private Button btnEnable;
-        private DataGridView dgvTipoPlato;
+        private DataGridView dgvData;
     }
 }
