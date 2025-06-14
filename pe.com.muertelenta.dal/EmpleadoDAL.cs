@@ -33,7 +33,7 @@ namespace pe.com.muertelenta.dal
                     employee.phone = reader["telemp"].ToString();
                     employee.mobile = reader["celemp"].ToString();
                     employee.email = reader["coremp"].ToString();
-                    employee.username = reader["usuemp"].ToString();
+                    employee.userName = reader["usuemp"].ToString();
                     employee.password = reader["claemp"].ToString();
                     employee.state = Convert.ToBoolean(reader["estemp"].ToString());
                     employee.codeDistrict = Convert.ToInt32(reader["coddis"].ToString());
@@ -62,7 +62,7 @@ namespace pe.com.muertelenta.dal
             {
                 sqlCommand = new SqlCommand();
                 sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.CommandText = "SP_RegistrarDistrito";
+                sqlCommand.CommandText = "SP_RegistrarEmpleado";
                 sqlCommand.Connection = connection.connect();
                 sqlCommand.Parameters.AddWithValue("@nombre", empleadoData.name);
                 sqlCommand.Parameters.AddWithValue("@apellidoparterno", empleadoData.firstLastName);
@@ -73,7 +73,7 @@ namespace pe.com.muertelenta.dal
                 sqlCommand.Parameters.AddWithValue("@telefono", empleadoData.phone);
                 sqlCommand.Parameters.AddWithValue("@celular", empleadoData.mobile);
                 sqlCommand.Parameters.AddWithValue("@correo", empleadoData.email);
-                sqlCommand.Parameters.AddWithValue("@usuario", empleadoData.username);
+                sqlCommand.Parameters.AddWithValue("@usuario", empleadoData.userName);
                 sqlCommand.Parameters.AddWithValue("@clave", empleadoData.password);
                 sqlCommand.Parameters.AddWithValue("@estado", empleadoData.state);
                 sqlCommand.Parameters.AddWithValue("@codigodistrito", empleadoData.codeDistrict);
