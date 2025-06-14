@@ -199,5 +199,18 @@ namespace pe.com.muertelenta.ui
                 cbState.Checked = selectedRow.Cells["state"].Value.ToString() == "Habilitado" ? true : false;
             }
         }
+
+        private void btnEnable_Click(object sender, EventArgs e)
+        {
+            frmHabilitarTipoDocumento form = new frmHabilitarTipoDocumento();
+            form.FormClosed += CloseListener;
+            form.ShowDialog();
+        }
+
+        private void CloseListener(object sender, EventArgs e)
+        {
+            SetDocumentTypes();
+            AddDataGridViewRows(documentTypes);
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace pe.com.muertelenta.dal
         public TipoDocumentoDAL()
         {
             ProviderSetup.GetLookupItemsCommandText = "SP_MostrartTipoDocumento";
-            ProviderSetup.GetAllLookupItemsCommandText = "SP_MostrarTipoDocumentoTodo";
+            ProviderSetup.GetAllLookupItemsCommandText = "SP_MostrartTodoTipoDocumento";
             ProviderSetup.AddLookupItemCommandText = "SP_RegistrarTipoDocumento";
             ProviderSetup.UpdateLookupItemCommandText = "SP_ActualizarTipoDocumento";
             ProviderSetup.EnableLookupItemCommandText = "SP_HabilitarTipoDocumento";
