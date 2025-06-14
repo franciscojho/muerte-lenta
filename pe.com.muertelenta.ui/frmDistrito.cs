@@ -15,26 +15,38 @@ namespace pe.com.muertelenta.ui
     public partial class frmDistrito : Form
     {
         private DistritoBAL distritoBAL = new DistritoBAL();
+        List<DistritoBO> districts = new List<DistritoBO>();
 
         public frmDistrito()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
             txtCode.ReadOnly = true;
-            enableFieldsAndButtons(false);
-            loadDistritos();
-            customizedDataGridView();
+            BlockFormControllers();
+            SetDistricts();
+            AddDataGridViewRows(districts);
         }
 
-        private void enableFieldsAndButtons(bool isEnabled)
+        private void SetDistricts()
         {
-            txtCode.Enabled = isEnabled;
+            districts = distritoBAL.ShowDistrito();
+        }
+
+
+        private void UnblockFormControllers(bool isEnabled = true)
+        {
             txtName.Enabled = isEnabled;
             cbState.Enabled = isEnabled;
             btnAdd.Enabled = isEnabled;
             btnUpdate.Enabled = isEnabled;
             btnDelete.Enabled = isEnabled;
         }
+
+        private void BlockFormControllers()
+        {
+            UnblockFormControllers(false);
+        }
+
 
         private void clearFields()
         {
@@ -44,20 +56,17 @@ namespace pe.com.muertelenta.ui
             txtName.Focus();
         }
 
-        private void customizedDataGridView()
+        private void AddDataGridViewRows(List<DistritoBO> districts)
         {
-            dgvDistrito.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvDistrito.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvDistrito.AutoGenerateColumns = false;
-            dgvDistrito.Columns.Clear();
-            dgvDistrito.ClearSelection();
-            dgvDistrito.ReadOnly = true;
+            dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvData.AutoGenerateColumns = false;
+            dgvData.Columns.Clear();
+            dgvData.ClearSelection();
+            dgvData.ReadOnly = true;
 
-            dgvDistrito.Columns.Add("code", "Código");
-            dgvDistrito.Columns["code"].DataPropertyName = "code";
-
-            dgvDistrito.Columns.Add("name", "Nombre");
-            dgvDistrito.Columns["name"].DataPropertyName = "name";
+            dgvData.Columns.Add("code", "Código");
+            dgvData.Columns.Add("name", "Nombre");
 
             DataGridViewTextBoxColumn stateColumn = new DataGridViewTextBoxColumn
             {
@@ -66,31 +75,26 @@ namespace pe.com.muertelenta.ui
                 DataPropertyName = "state"
             };
 
-            dgvDistrito.Columns.Add(stateColumn);
-            dgvDistrito.CellFormatting += (s, e) =>
-            {
-                if (dgvDistrito.Columns[e.ColumnIndex].Name == "state" && e.Value != null)
-                {
-                    e.Value = (bool)e.Value ? "Habilitado" : "Deshabilitado";
-                    e.FormattingApplied = true;
-                }
-            };
+            dgvData.Columns.Add(stateColumn);
 
-            foreach (DataGridViewColumn column in dgvDistrito.Columns)
+            for (int i = 0; i < districts.Count; i++)
+            {
+                DistritoBO district = districts[i];
+                dgvData.Rows.Add();
+                dgvData.Rows[i].Cells["code"].Value = district.code;
+                dgvData.Rows[i].Cells["name"].Value = district.name;
+                dgvData.Rows[i].Cells["state"].Value = district.state ? "Habilitado" : "Deshabilitado";
+            }
+
+            foreach (DataGridViewColumn column in dgvData.Columns)
             {
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
         }
 
-        private void loadDistritos()
-        {
-            List<DistritoBO> distritoBOs = distritoBAL.ShowAllDistrito();
-            dgvDistrito.DataSource = distritoBOs;
-        }
-
         private void btnNew_Click(object sender, EventArgs e)
         {
-            enableFieldsAndButtons(true);
+            UnblockFormControllers();
             btnNew.Enabled = false;
         }
 
@@ -112,12 +116,24 @@ namespace pe.com.muertelenta.ui
                 if (response == true)
                 {
                     MessageBox.Show("Se registró el distrito");
-                    loadDistritos();
+                    SetDistricts();
+                    AddDataGridViewRows(districts);
                     clearFields();
-                    enableFieldsAndButtons(false);
+                    BlockFormControllers();
                     btnNew.Enabled = true;
                 }
             }
+        }
+
+        private void dgvDistrito_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+            UnblockFormControllers();
+            btnAdd.Enabled = true;
+            DataGridViewRow selectedRow = dgvData.Rows[index];
+            txtCode.Text = selectedRow.Cells["code"].Value.ToString();
+            txtName.Text = selectedRow.Cells["name"].Value.ToString();
+            cbState.Checked = selectedRow.Cells["state"].Value.ToString() == "Habilitado" ? true : false;
         }
     }
 }
