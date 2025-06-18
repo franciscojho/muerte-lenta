@@ -46,9 +46,9 @@
             btnUpdate = new Button();
             btnDelete = new Button();
             btnEnable = new Button();
-            dgvPlato = new DataGridView();
+            dgvData = new DataGridView();
             chState = new CheckBox();
-            ((System.ComponentModel.ISupportInitialize)dgvPlato).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvData).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -208,15 +208,15 @@
             btnEnable.UseVisualStyleBackColor = true;
             btnEnable.Click += btnEnable_Click;
             // 
-            // dgvPlato
+            // dgvData
             // 
-            dgvPlato.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPlato.Location = new Point(45, 480);
-            dgvPlato.Name = "dgvPlato";
-            dgvPlato.RowHeadersWidth = 62;
-            dgvPlato.Size = new Size(986, 353);
-            dgvPlato.TabIndex = 20;
-            dgvPlato.CellClick += dgvPlato_CellClick;
+            dgvData.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvData.Location = new Point(45, 480);
+            dgvData.Name = "dgvData";
+            dgvData.RowHeadersWidth = 62;
+            dgvData.Size = new Size(986, 353);
+            dgvData.TabIndex = 20;
+            dgvData.CellClick += dgvPlato_CellClick;
             // 
             // chState
             // 
@@ -234,7 +234,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1079, 860);
             Controls.Add(chState);
-            Controls.Add(dgvPlato);
+            Controls.Add(dgvData);
             Controls.Add(btnEnable);
             Controls.Add(btnDelete);
             Controls.Add(btnUpdate);
@@ -255,7 +255,7 @@
             Controls.Add(label1);
             Name = "frmPlato";
             Text = "frmPlato";
-            ((System.ComponentModel.ISupportInitialize)dgvPlato).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvData).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -280,7 +280,7 @@
         private Button btnUpdate;
         private Button btnDelete;
         private Button btnEnable;
-        private DataGridView dgvPlato;
+        private DataGridView dgvData;
         private CheckBox chState;
     }
 }

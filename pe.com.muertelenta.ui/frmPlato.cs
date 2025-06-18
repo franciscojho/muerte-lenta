@@ -1,5 +1,6 @@
 ﻿using pe.com.muertelenta.bal;
 using pe.com.muertelenta.bo;
+using System.Data;
 
 namespace pe.com.muertelenta.ui
 {
@@ -95,19 +96,19 @@ namespace pe.com.muertelenta.ui
 
         private void AddDataGridViewRows(List<PlatoBO> platoBOs)
         {
-            dgvPlato.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvPlato.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvPlato.AutoGenerateColumns = false;
-            dgvPlato.Columns.Clear();
-            dgvPlato.ClearSelection();
-            dgvPlato.ReadOnly = true;
+            dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvData.AutoGenerateColumns = false;
+            dgvData.Columns.Clear();
+            dgvData.ClearSelection();
+            dgvData.ReadOnly = true;
 
-            dgvPlato.Columns.Add("code", "Còdigo");
-            dgvPlato.Columns.Add("name", "Nombre");
-            dgvPlato.Columns.Add("description", "Descripción");
-            dgvPlato.Columns.Add("price", "Precio");
-            dgvPlato.Columns.Add("quantity", "Cantidad");
-            dgvPlato.Columns.Add("dishType", "Tipo de Plato");
+            dgvData.Columns.Add("code", "Còdigo");
+            dgvData.Columns.Add("name", "Nombre");
+            dgvData.Columns.Add("description", "Descripción");
+            dgvData.Columns.Add("price", "Precio");
+            dgvData.Columns.Add("quantity", "Cantidad");
+            dgvData.Columns.Add("dishType", "Tipo de Plato");
 
             DataGridViewTextBoxColumn stateColumn = new DataGridViewTextBoxColumn
             {
@@ -116,22 +117,22 @@ namespace pe.com.muertelenta.ui
                 DataPropertyName = "state"
             };
 
-            dgvPlato.Columns.Add(stateColumn);
+            dgvData.Columns.Add(stateColumn);
 
             for (int i = 0; i < platoBOs.Count; i++)
             {
                 PlatoBO platoBO = platoBOs[i];
-                dgvPlato.Rows.Add();
-                dgvPlato.Rows[i].Cells["code"].Value = platoBO.code;
-                dgvPlato.Rows[i].Cells["name"].Value = platoBO.name;
-                dgvPlato.Rows[i].Cells["description"].Value = platoBO.description;
-                dgvPlato.Rows[i].Cells["price"].Value = platoBO.price;
-                dgvPlato.Rows[i].Cells["quantity"].Value = platoBO.quantity;
-                dgvPlato.Rows[i].Cells["dishType"].Value = platoBO.dishType.name;
-                dgvPlato.Rows[i].Cells["state"].Value = platoBO.state ? "Habilitado" : "Deshabilitado";
+                dgvData.Rows.Add();
+                dgvData.Rows[i].Cells["code"].Value = platoBO.code;
+                dgvData.Rows[i].Cells["name"].Value = platoBO.name;
+                dgvData.Rows[i].Cells["description"].Value = platoBO.description;
+                dgvData.Rows[i].Cells["price"].Value = platoBO.price;
+                dgvData.Rows[i].Cells["quantity"].Value = platoBO.quantity;
+                dgvData.Rows[i].Cells["dishType"].Value = platoBO.dishType.name;
+                dgvData.Rows[i].Cells["state"].Value = platoBO.state ? "Habilitado" : "Deshabilitado";
             }
 
-            foreach (DataGridViewColumn column in dgvPlato.Columns)
+            foreach (DataGridViewColumn column in dgvData.Columns)
             {
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
@@ -232,24 +233,47 @@ namespace pe.com.muertelenta.ui
             }
         }
 
-        private void btnEnable_Click(object sender, EventArgs e)
+        private TipoPlatoBO findDishTypeByName(string dishTypeName)
         {
+            List<TipoPlatoBO> dishTypes = tipoPlatoBAL.ShowAllTipoPlato();
+            TipoPlatoBO foundDishType = new TipoPlatoBO();
 
+            foundDishType = dishTypes.FirstOrDefault(
+                item => item.name.Equals(dishTypeName, StringComparison.OrdinalIgnoreCase)
+            );
+
+            return foundDishType;
         }
 
         private void dgvPlato_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = e.RowIndex;
-            UnblockFormControllers();
-            btnAdd.Enabled = true;
-            DataGridViewRow selectedRow = dgvPlato.Rows[index]; 
-            txtCode.Text = selectedRow.Cells["code"].Value.ToString();
-            txtName.Text = selectedRow.Cells["name"].Value.ToString();
-            txtDescription.Text = selectedRow.Cells["description"].Value.ToString();
-            txtPrice.Text = selectedRow.Cells["price"].Value.ToString();
-            txtQuantity.Text = selectedRow.Cells["quantity"].Value.ToString();
-            cbDishType.Text = selectedRow.Cells["dishType"].Value.ToString();
-            chState.Checked = selectedRow.Cells["state"].Value.ToString() == "Habilitado" ? true : false;
+            DataGridViewRow selectedRow = dgvData.Rows[index];
+            if (selectedRow.Cells["code"].Value != null)
+            {
+                UnblockFormControllers(); 
+                btnAdd.Enabled = false;
+                txtCode.Text = selectedRow.Cells["code"].Value.ToString();
+                txtName.Text = selectedRow.Cells["name"].Value.ToString();
+                txtDescription.Text = selectedRow.Cells["description"].Value.ToString();
+                txtPrice.Text = selectedRow.Cells["price"].Value.ToString();
+                txtQuantity.Text = selectedRow.Cells["quantity"].Value.ToString();
+                chState.Checked = selectedRow.Cells["state"].Value.ToString() == "Habilitado" ? true : false;
+                string dishTypeName = selectedRow.Cells["dishType"].Value.ToString();
+                TipoPlatoBO foundDishType = findDishTypeByName(dishTypeName);
+                cbDishType.SelectedValue = foundDishType.code != 0 ? foundDishType.code : -1;
+            }
+        }
+
+        private void btnEnable_Click(object sender, EventArgs e)
+        {
+            frmHabilitarPlato form = new frmHabilitarPlato();
+            form.FormClosed += CloseListener;
+            form.ShowDialog();
+        }
+        private void CloseListener(object sender, EventArgs e)
+        {
+            AddDataGridViewRows(GetPlatos());
         }
     }
 }

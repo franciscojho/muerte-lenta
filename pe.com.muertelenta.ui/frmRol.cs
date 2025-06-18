@@ -192,7 +192,7 @@ namespace pe.com.muertelenta.ui
             btnAdd.Enabled = true;
             DataGridViewRow selectedRow = dgvData.Rows[index];
             Console.WriteLine(selectedRow.Cells["code"].Value);
-            if (selectedRow.Cells["code"].Value != null)
+            if (selectedRow .Cells["code"].Value != null)
             {
                 txtCode.Text = selectedRow.Cells["code"].Value.ToString();
                 txtName.Text = selectedRow.Cells["name"].Value.ToString();
