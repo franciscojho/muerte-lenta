@@ -36,5 +36,10 @@ namespace pe.com.muertelenta.bal
         {
             return platoDAL.EnablePlato(platoBO);
         }
+
+        public int ShowPlatoCode()
+        {
+            return platoDAL.ShowPlatoCode();
+        }
     }
 }

@@ -97,5 +97,34 @@ namespace pe.com.muertelenta.dal
                 connection.closeConnection();
             }
         }
+
+        public bool ValidateEmployee(EmpleadoBO employee)
+        {
+            int responseCode = 0;
+            try
+            {
+                sqlCommand = new SqlCommand();
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = "SP_ValidarEmpleado";
+                sqlCommand.Connection = connection.connect();
+                sqlCommand.Parameters.AddWithValue("@usuario", employee.userName);
+                sqlCommand.Parameters.AddWithValue("@clave", employee.password);
+                reader = sqlCommand.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    return true;
+                }
+                return false;
+            } 
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+            finally
+            {
+                connection.closeConnection();
+            }
+        }
     }
 }

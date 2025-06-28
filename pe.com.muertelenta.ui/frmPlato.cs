@@ -160,6 +160,7 @@ namespace pe.com.muertelenta.ui
         {
             UnblockFormControllers();
             btnNew.Enabled = false;
+            txtCode.Text = platoBAL.ShowPlatoCode().ToString();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

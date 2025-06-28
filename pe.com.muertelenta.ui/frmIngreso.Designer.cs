@@ -30,8 +30,8 @@
         {
             label1 = new Label();
             label2 = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
+            txtUserName = new TextBox();
+            txtPassword = new TextBox();
             label3 = new Label();
             btnIngresar = new Button();
             btnSalir = new Button();
@@ -58,19 +58,20 @@
             label2.TabIndex = 1;
             label2.Text = "Usuario:";
             // 
-            // textBox1
+            // txtUserName
             // 
-            textBox1.Location = new Point(105, 60);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(298, 23);
-            textBox1.TabIndex = 2;
+            txtUserName.Location = new Point(105, 60);
+            txtUserName.Name = "txtUserName";
+            txtUserName.Size = new Size(298, 23);
+            txtUserName.TabIndex = 2;
             // 
-            // textBox2
+            // txtPassword
             // 
-            textBox2.Location = new Point(105, 100);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(298, 23);
-            textBox2.TabIndex = 4;
+            txtPassword.Location = new Point(105, 100);
+            txtPassword.Name = "txtPassword";
+            txtPassword.Size = new Size(298, 23);
+            txtPassword.TabIndex = 4;
+            txtPassword.TextChanged += txtPassword_TextChanged;
             // 
             // label3
             // 
@@ -117,9 +118,9 @@
             Controls.Add(pictureBox1);
             Controls.Add(btnSalir);
             Controls.Add(btnIngresar);
-            Controls.Add(textBox2);
+            Controls.Add(txtPassword);
             Controls.Add(label3);
-            Controls.Add(textBox1);
+            Controls.Add(txtUserName);
             Controls.Add(label2);
             Controls.Add(label1);
             IsMdiContainer = true;
@@ -134,8 +135,8 @@
 
         private Label label1;
         private Label label2;
-        private TextBox textBox1;
-        private TextBox textBox2;
+        private TextBox txtUserName;
+        private TextBox txtPassword;
         private Label label3;
         private Button btnIngresar;
         private Button btnSalir;

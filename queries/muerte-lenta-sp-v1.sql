@@ -122,6 +122,42 @@ end catch
 end
 go
 
+-- generar codigo
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_CodigoTipoPlato') 
+DROP PROCEDURE SP_CodigoTipoPlato 
+go
+CREATE PROC	SP_CodigoTipoPlato
+as
+begin
+declare @siguientecodigo int
+declare @valoractual int
+
+-- si la tabla esta vacia
+if not exists (select 1 from tipoplato)
+begin
+set @siguientecodigo=1
+end
+else
+begin
+-- obetner el proximo valor del identity
+select @siguientecodigo=IDENT_CURRENT('tipoplato')+1
+
+-- comprobando que el identity es correcto
+dbcc checkident ('tipoplato',noreseed) with no_infomsgs
+select @valoractual=IDENT_CURRENT('tipoplato')+1
+
+-- verificamos los valores
+if @valoractual>@siguientecodigo
+set @siguientecodigo=@valoractual
+end
+-- retornamos el resultado
+select @siguientecodigo as SiguienteCodigo
+end
+go
+exec SP_CodigoTipoPlato
+go
+
+
 -- plato
 -- Mostrar plato
 IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_MostrarPlato') 
@@ -194,6 +230,22 @@ go
 exec SP_BuscarPlatoXCodigo 1
 go
 
+-- Search employee by username and password
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_ValidarEmpleado') 
+DROP PROCEDURE SP_ValidarEmpleado 
+go
+CREATE PROC	SP_ValidarEmpleado
+@usuario varchar(40),
+@clave varchar(40)
+as
+begin
+select * from empleado where usuemp=@usuario and claemp=@clave
+end
+go
+exec SP_ValidarEmpleado 'mhuapalla','123456'
+go
+
+
 -- Actualizar Plato
 IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_ActualizarPlato') 
 DROP PROCEDURE SP_ActualizarPlato
@@ -262,4 +314,76 @@ begin catch
 	rollback tran SP_HabilitarPlato
 end catch
 end
+go
+
+-- generar codigo
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_CodigoPlato') 
+DROP PROCEDURE SP_CodigoPlato 
+go
+CREATE PROC	SP_CodigoPlato
+as
+begin
+declare @siguientecodigo int
+declare @valoractual int
+
+-- si la tabla esta vacia
+if not exists (select 1 from plato)
+begin
+set @siguientecodigo=1
+end
+else
+begin
+-- obetner el proximo valor del identity
+select @siguientecodigo=IDENT_CURRENT('plato')+1
+
+-- comprobando que el identity es correcto
+dbcc checkident ('plato',noreseed) with no_infomsgs
+select @valoractual=IDENT_CURRENT('plato')+1
+
+-- verificamos los valores
+if @valoractual>@siguientecodigo
+set @siguientecodigo=@valoractual
+end
+-- retornamos el resultado
+select @siguientecodigo as SiguienteCodigo
+end
+go
+exec SP_CodigoPlato
+go
+
+
+-- orden de pedido
+-- generar codigo
+IF EXISTS(SELECT * FROM sys.procedures WHERE NAME='SP_CodigoOrdenPedido') 
+DROP PROCEDURE SP_CodigoOrdenPedido 
+go
+CREATE PROC	SP_CodigoOrdenPedido
+as
+begin
+declare @siguientecodigo int
+declare @valoractual int
+
+-- si la tabla esta vacia
+if not exists (select 1 from orden)
+begin
+set @siguientecodigo=1
+end
+else
+begin
+-- obetner el proximo valor del identity
+select @siguientecodigo=IDENT_CURRENT('orden')+1
+
+-- comprobando que el identity es correcto
+dbcc checkident ('orden',noreseed) with no_infomsgs
+select @valoractual=IDENT_CURRENT('orden')+1
+
+-- verificamos los valores
+if @valoractual>@siguientecodigo
+set @siguientecodigo=@valoractual
+end
+-- retornamos el resultado
+select @siguientecodigo as SiguienteCodigo
+end
+go
+exec SP_CodigoOrdenPedido
 go

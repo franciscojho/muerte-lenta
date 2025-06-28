@@ -12,6 +12,7 @@ namespace pe.com.muertelenta.dal
         public string UpdateLookupItemCommandText { get; set; }
         public string DeleteLookupItemCommandText { get; set; }
         public string EnableLookupItemCommandText { get; set; }
+        public string ShowCodeLookupItemCommandText { get; set; }
         public string DbSuffix { get; set; }
     }
 
@@ -153,6 +154,33 @@ namespace pe.com.muertelenta.dal
         public bool DeleteLookupItem(LookupItemBO lookupItem)
         {
             return EnableLookupItem(lookupItem, _config.DeleteLookupItemCommandText);
+        }
+
+        public int ShowCode()
+        {
+            int code = 0;
+            try
+            {
+                sqlCommand = new SqlCommand();
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.CommandText = _config.ShowCodeLookupItemCommandText;
+                sqlCommand.Connection = connection.connect();
+                object res = sqlCommand.ExecuteScalar();
+                if (res != null)
+                {
+                    code = (int)res;
+                }
+                return code;
+            }
+            catch(SqlException ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return 0;
+            }
+            finally
+            {
+                connection.closeConnection();
+            }
         }
     }
 }
