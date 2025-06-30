@@ -17,5 +17,10 @@ namespace pe.com.muertelenta.bal
         {
             return empleadoDAL.AddEmpleado(empleadoBO);
         }
+
+        public bool ValidateEmployee(EmpleadoBO empleadoBO)
+        {
+            return empleadoDAL.ValidateEmployee(empleadoBO);
+        }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 
 namespace pe.com.muertelenta.dal
 {
@@ -13,12 +8,12 @@ namespace pe.com.muertelenta.dal
 
         public SqlConnection? connect()
         {
-            string dbSettings = 
-                "Data Source=FRANCISCOJHO\\SQLEXPRESS;" +
+            string dbSettings =
+                "Data Source=DESKTOP-RFDMQII\\SQLEXPRESS;" +
                 "Initial Catalog=bdmuertelenta2025;" +
                 "Integrated Security=SSPI;" +
                 "TrustServerCertificate=true;";
-
+            // "Data Source=DESKTOP-RFDMQII\\SQLEXPRESS;Initial Catalog=bdmuertelenta2025;Integrated Security=SSPI;TrustServerCertificate=true;";
             try
             {
                 sqlConnection = new SqlConnection(dbSettings);
